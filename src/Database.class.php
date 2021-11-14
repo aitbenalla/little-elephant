@@ -58,20 +58,22 @@ class Database
     try {
       $conn = $this->getConnection();
       $sql = "CREATE TABLE Members (
-        id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-        firstname VARCHAR(30),
-        lastname VARCHAR(30),
-        birth_date DATE NOT NULL,
-        username VARCHAR(50),
-        phone INT(50),
-        email VARCHAR(50),
-        password VARCHAR(61),
-        city VARCHAR(20),
-        country VARCHAR(20),
-        zip VARCHAR(10),
-        account_type BOOLEAN,
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-        )";
+        `id` INT(11) UNSIGNED AUTO_INCREMENT,
+        `firstname` VARCHAR(30),
+        `lastname` VARCHAR(30),
+        `birth_date` DATE NOT NULL,
+        `username` VARCHAR(50),
+        `phone` INT(50),
+        `email` VARCHAR(180),
+        `password` VARCHAR(61),
+        `city` VARCHAR(20),
+        `country` VARCHAR(20),
+        `zip` VARCHAR(10),
+        `account_type` LONGTEXT,
+        `photo` LONGBLOB,
+        `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        PRIMARY KEY(`id`)
+        )ENGINE=InnoDB;";
 
       $conn->exec($sql);
 

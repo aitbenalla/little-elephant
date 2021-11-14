@@ -1,5 +1,5 @@
 <?php 
-require 'connection.php';
+require 'connect.php';
 
 if (isset($_POST['add_row']))
 {
@@ -18,7 +18,7 @@ if (isset($_POST['add_row']))
                 }
                 else
                 {
-                    getAlert('error','new-member.php','Birthday Invalid');
+                    getAlert('error','add.php','Birthday Invalid');
                 }
                 break;
             case 'username':
@@ -28,7 +28,7 @@ if (isset($_POST['add_row']))
                 }
                 else
                 {
-                    getAlert('error','new-member.php','Username Invalid');
+                    getAlert('error','add.php','Username Invalid');
                 }
                 break;
             case 'phone':
@@ -40,7 +40,7 @@ if (isset($_POST['add_row']))
                     $email = trim($value);
                 }
                 else {
-                    getAlert('error','new-member.php','Email Invalid');
+                    getAlert('error','add.php','Email Invalid');
                 }
                 break;
             case 'password':
@@ -49,7 +49,7 @@ if (isset($_POST['add_row']))
                 }
                 else
                 {
-                    getAlert('error','new-member.php','Password not strong enough / Password too short!');
+                    getAlert('error','add.php','Password not strong enough / Password too short!');
                 }
             case 'address':
                 $address = $value;

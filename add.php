@@ -8,19 +8,23 @@ include './components/head.php' ?>
   <div class="row p-3">
     <div class="col-lg-12">
       <form class="row g-3" method="POST" action="./src/actions.php">
-      <div class="col-md-6">
+        <div class="col-md-6">
           <label for="inputPhoto" class="form-label">Photo</label>
           <input type="file" name="photo" class="form-control" id="inputPhoto">
         </div>
-        <div class="col-md-6">
-          <label for="inputFullName" class="form-label">Full Name</label>
-          <input type="text" name="fullname" class="form-control" id="inputFullName">
+        <div class="col-md-3">
+          <label for="inputFirstName" class="form-label">First Name</label>
+          <input type="text" name="firstname" class="form-control" id="inputFirstName">
+        </div>
+        <div class="col-md-3">
+          <label for="inputLastName" class="form-label">Last Name</label>
+          <input type="text" name="lastname" class="form-control" id="inputLastName">
         </div>
         <div class="col-md-6">
           <label for="inputUsername" class="form-label">Username</label>
           <input type="text" name="username" class="form-control" id="inputUsername" required>
         </div>
-        <div class="col-md-6">
+        <!-- <div class="col-md-6">
           <label for="inputBirthday" class="form-label">Birthday</label>
           <input type="date" name="birthday" class="form-control" id="inputBirthday" required>
         </div>
@@ -301,7 +305,7 @@ include './components/head.php' ?>
         <div class="col-md-2">
           <label for="inputZip" class="form-label">Zip</label>
           <input type="text" class="form-control" name="zip" id="inputZip">
-        </div>
+        </div> -->
         <div class="col-12">
           <div class="form-check">
             <input class="form-check-input" name="check" type="checkbox" id="gridCheck" required>

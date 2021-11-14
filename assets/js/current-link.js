@@ -1,6 +1,6 @@
 $(function(){
     $('a.nav-link').each(function(){
-        if ($(this).prop('href') == window.location.href) {
+        if ($(this).prop('href') == window.location.href + '.php') {
             $(this).addClass('active'); $(this).parents('li').addClass('active');
         }
     });
