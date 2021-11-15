@@ -53,12 +53,12 @@ class Database
     $this->disconnect();
   }
 
-  public function createTableMembers()
+  public function createTableMember()
   {
     try {
-      $conn = $this->getConnection();
-      $sql = "CREATE TABLE Members (
-        `id` INT(11) UNSIGNED AUTO_INCREMENT,
+
+      $sql = "CREATE TABLE IF NOT EXISTS `member` (
+        `id` INT(11) AUTO_INCREMENT PRIMARY KEY,
         `firstname` VARCHAR(30),
         `lastname` VARCHAR(30),
         `birth_date` DATE NOT NULL,
@@ -71,11 +71,34 @@ class Database
         `zip` VARCHAR(10),
         `account_type` LONGTEXT,
         `photo` LONGBLOB,
-        `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        PRIMARY KEY(`id`)
+        `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )ENGINE=InnoDB;";
 
-      $conn->exec($sql);
+      $this->getConnection()->exec($sql);
+
+      return true;
+    } catch (PDOException $th) {
+      return $th->getMessage();
+    }
+
+    $this->disconnect();
+  }
+
+  public function createTableImage()
+  {
+    try {
+
+      $sql = "CREATE TABLE IF NOT EXISTS `image` (
+        `id` INT(11) AUTO_INCREMENT PRIMARY KEY,
+        `type` VARCHAR(25) NOT NULL DEFAULT '',
+        `data` LONGBLOB NOT NULL,
+        member_id INT NOT NULL,
+        FOREIGN KEY (member_id) REFERENCES member(id)
+        ON DELETE CASCADE
+        ON UPDATE RESTRICT
+      )ENGINE=InnoDB;";
+
+      $this->getConnection()->exec($sql);
 
       return true;
     } catch (PDOException $th) {

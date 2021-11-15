@@ -6,19 +6,19 @@ if (isset($_POST['add_row']))
     $email_pattern = "/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,})$/i";
     $username_pattern = '/^[a-zA-Z0-9]{5,}$/';
     $pass_pattern = '/^.{8,}$/';
-    $phone_pattern = '[0-9]{3}-[0-9]{2}-[0-9]{3}';
+    $phone_pattern = '/^[0-9]{10}+$/';
 
     foreach ($_POST as $key => $value) {
         switch ($key)
         {
-            case 'birthday':
+            case 'birth_date':
                 if (validateAge($value))
                 {
                     $birth = $value;
                 }
                 else
                 {
-                    getAlert('error','add.php','Birthday Invalid');
+                    getAlert('error','add.php','You Must be 18 or Older');
                 }
                 break;
             case 'username':
@@ -32,9 +32,16 @@ if (isset($_POST['add_row']))
                 }
                 break;
             case 'phone':
-                $phone = trim($value);
+                if (preg_match($phone_pattern,$value)) {
+                    $phone = trim($value);
+                }
+                else
+                {
+                    getAlert('error','add.php','Phone Invalid');
+                }
                 break;
             case 'email':
+                // filter_var($value, FILTER_VALIDATE_EMAIL)
                 if(preg_match($email_pattern, $value))
                 {
                     $email = trim($value);
@@ -45,7 +52,12 @@ if (isset($_POST['add_row']))
                 break;
             case 'password':
                 if (preg_match($pass_pattern, $value)) {
-                    $password = hashThePass($value);
+                    if ($value === $_POST['password_repeat']) {
+                        $password = hashThePass($value);
+                    }
+                    else {
+                        getAlert('error','add.php','Passwords not match');
+                    }
                 }
                 else
                 {
@@ -68,33 +80,40 @@ if (isset($_POST['add_row']))
         }
     }
 
-    $sql = 'INSERT INTO members(birthday,username,phone,email,password,city,country,zip) 
-    VALUES(
-        :birthday,
-        :username,
-        :phone,
-        :email,
-        :password,
-        :city,
-        :country,
-        :zip
-        )';
+    if ($_FILES['photo']) {
+        $imgData = addslashes(file_get_contents($_FILES['photo']['tmp_name']));
+        $imageProperties = getimageSize($_FILES['photo']['tmp_name']);
 
-    $stmt = $connection->prepare($sql);
-    $stmt->bindParam(":birthday", $birth);
-    $stmt->bindParam(":username", $username);
-    $stmt->bindParam(":phone", $phone);
-    $stmt->bindParam(":email", $email);
-    $stmt->bindParam(":password", $pass);
-    $stmt->bindParam(":city", $city);
-    $stmt->bindParam(":country", $country);
-    $stmt->bindParam(":zip", $zip);
+        var_dump($imageProperties);
+    }
 
-    $stmt->execute();
+    // $sql = 'INSERT INTO members(birth_date,username,phone,email,password,city,country,zip) 
+    // VALUES(
+    //     :birth_date,
+    //     :username,
+    //     :phone,
+    //     :email,
+    //     :password,
+    //     :city,
+    //     :country,
+    //     :zip
+    //     )';
 
-    $member_id = $connection->lastInsertId();
+    // $stmt = $connection->prepare($sql);
+    // $stmt->bindParam(":birth_date", $birth);
+    // $stmt->bindParam(":username", $username);
+    // $stmt->bindParam(":phone", $phone);
+    // $stmt->bindParam(":email", $email);
+    // $stmt->bindParam(":password", $pass);
+    // $stmt->bindParam(":city", $city);
+    // $stmt->bindParam(":country", $country);
+    // $stmt->bindParam(":zip", $zip);
 
-    echo 'The publisher id ' . $member_id . ' was inserted';
+    // $stmt->execute();
+
+    // $member_id = $connection->lastInsertId();
+
+    // echo 'The publisher id ' . $member_id . ' was inserted';
 
 }
 

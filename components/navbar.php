@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom" aria-label="Eleventh navbar example">
     <div class="container">
-        <a class="navbar-brand" href="index.php"><img class="logo" src="./assets/media/logo.png" alt="logo" width="40"></a>
+        <a class="navbar-brand" href="home"><img class="logo" src="./assets/media/logo.png" alt="logo" width="40"></a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample09" aria-controls="navbarsExample09" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -8,13 +8,13 @@
         <div class="collapse navbar-collapse" id="navbarsExample09">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link" href="index.php">Home</a>
+                    <a class="nav-link" href="home">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="list.php">List</a>
+                    <a class="nav-link" href="list">List</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="add.php">Add</a>
+                    <a class="nav-link" href="add">Add</a>
                 </li>
             </ul>
             <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">

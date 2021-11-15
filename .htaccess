@@ -1,16 +1,13 @@
 Options +FollowSymLinks -MultiViews
-DirectoryIndex index.php
+DirectoryIndex home.php
 # Turn mod_rewrite on
 RewriteEngine On
+
+<IfModule mod_rewrite.c>
 RewriteBase /
 
-ErrorDocument 404 /pages/errors/404_redirect.php
-
-RewriteCond %{REQUEST_URI} ^/404/$
-RewriteRule ^(.*)$ /pages/errors/404.php [L]
-
-RewriteCond %{REQUEST_URI} ^/500/$
-RewriteRule ^(.*)$ /pages/errors/500.php [L]
+ErrorDocument 404 Page_Not_Found_404_:(
+ErrorDocument 500 Something_Has_Gone_Wrong_500_:(
 
 # To externally redirect /dir/foo.php to /dir/foo
 RewriteCond %{REQUEST_METHOD} !POST

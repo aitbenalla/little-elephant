@@ -20,14 +20,15 @@ if (isset($_POST['db_execute']) && !empty($_POST['db_execute'])) {
             }
         }
 
-        // Create Table Members
+        // Create Tables
         if ($_POST['db_execute'] === '3' && is_object($connection)) {
-            $creating = $conf->createTableMembers();
+            $member = $conf->createTableMember();
+            $image = $conf->createTableImage();
 
-            if ($creating === true) {
-                getAlert('success', '', 'Table created successfully');
+            if ($member === true && $image === true) {
+                getAlert('success', '', 'Tables created successfully');
             } else {
-                getAlert('warning', '', $creating);
+                getAlert('warning', '', $member . $image);
             }
         } else if ($_POST['db_execute'] === '3' && !is_object($connection)) {
             getAlert('error', '', $connection);

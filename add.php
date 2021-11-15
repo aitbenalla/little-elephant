@@ -7,12 +7,12 @@ include './components/head.php' ?>
   <h1 class="fw-bold h2">Add Row:</h1>
   <div class="row p-3">
     <div class="col-lg-12">
-      <form class="row g-3" method="POST" action="./src/actions.php">
+      <form class="row g-3" method="POST" action="./src/actions.php" enctype="multipart/form-data">
         <div class="col-md-6">
           <label for="inputPhoto" class="form-label">Photo</label>
           <input type="file" name="photo" class="form-control" id="inputPhoto">
         </div>
-        <div class="col-md-3">
+        <!-- <div class="col-md-3">
           <label for="inputFirstName" class="form-label">First Name</label>
           <input type="text" name="firstname" class="form-control" id="inputFirstName">
         </div>
@@ -24,9 +24,9 @@ include './components/head.php' ?>
           <label for="inputUsername" class="form-label">Username</label>
           <input type="text" name="username" class="form-control" id="inputUsername" required>
         </div>
-        <!-- <div class="col-md-6">
-          <label for="inputBirthday" class="form-label">Birthday</label>
-          <input type="date" name="birthday" class="form-control" id="inputBirthday" required>
+        <div class="col-md-6">
+          <label for="inputBirthDate" class="form-label">Birthdate</label>
+          <input type="date" name="birth_date" class="form-control" id="inputBirthDate" required>
         </div>
         <div class="col-md-6">
           <label for="inputEmail" class="form-label">Email</label>
@@ -50,7 +50,7 @@ include './components/head.php' ?>
         </div>
         <div class="col-md-6">
           <label for="inputCity" class="form-label">City</label>
-          <input type="text" class="form-control" name="city" id="inputCity">
+          <input type="text" class="form-control" name="city" id="inputCity" required>
         </div>
         <div class="col-md-4">
           <label for="inputCountry" class="form-label">Country</label>
@@ -304,8 +304,8 @@ include './components/head.php' ?>
         </div>
         <div class="col-md-2">
           <label for="inputZip" class="form-label">Zip</label>
-          <input type="text" class="form-control" name="zip" id="inputZip">
-        </div> -->
+          <input type="text" class="form-control" name="zip" id="inputZip" required>
+        </div>
         <div class="col-12">
           <div class="form-check">
             <input class="form-check-input" name="check" type="checkbox" id="gridCheck" required>
@@ -313,7 +313,7 @@ include './components/head.php' ?>
               Check me out
             </label>
           </div>
-        </div>
+        </div> -->
         <div class="col-12 text-center border-top p-4">
           <button type="submit" name="add_row" class="btn btn-primary">Add</button>
         </div>
