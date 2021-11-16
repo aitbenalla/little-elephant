@@ -1,5 +1,4 @@
 <?php
-define('__ROOT__', dirname(dirname(__FILE__)));
 require 'connect.php';
 
 if (isset($_POST['db_execute']) && !empty($_POST['db_execute'])) {
@@ -23,12 +22,11 @@ if (isset($_POST['db_execute']) && !empty($_POST['db_execute'])) {
         // Create Tables
         if ($_POST['db_execute'] === '3' && is_object($connection)) {
             $member = $conf->createTableMember();
-            $image = $conf->createTableImage();
 
-            if ($member === true && $image === true) {
+            if ($member === true) {
                 getAlert('success', '', 'Tables created successfully');
             } else {
-                getAlert('warning', '', $member . $image);
+                getAlert('warning', '', $member);
             }
         } else if ($_POST['db_execute'] === '3' && !is_object($connection)) {
             getAlert('error', '', $connection);

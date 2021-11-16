@@ -14,7 +14,7 @@ include './components/head.php' ?>
           <select class="form-select mb-2" aria-label="Default select example" name="db_execute">
             <option value="1">Test Connection</option>
             <option value="2">Create Database</option>
-            <option value="3">Create Table</option>
+            <option value="3">Create Tables</option>
           </select>
           <button class="btn btn-primary" type="submit">Submit</button>
         </form>

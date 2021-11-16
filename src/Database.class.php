@@ -1,10 +1,28 @@
 <?php
-
 class Database
 {
+  private string $servername;
+  private string $username;
+  private string $password;
 
-  public function __construct(public string $servername, public string $username, public string $password)
+  public function __construct()
   {
+    define('ROOTPATH', dirname(__FILE__));
+
+    $env_file = ROOTPATH . "/../env.json";
+
+    if (file_exists($env_file) && is_readable($env_file)) {
+      $env_content = file_get_contents($env_file);
+      $env = json_decode($env_content, true);
+
+      $this->servername = $env['servername'];
+      $this->username = $env['username'];
+      $this->password = $env['password'];
+
+    } else {
+      getAlert('error', '', 'Database configuration not found or not readable');
+    }
+
   }
 
   public function getConnection()
@@ -59,18 +77,18 @@ class Database
 
       $sql = "CREATE TABLE IF NOT EXISTS `member` (
         `id` INT(11) AUTO_INCREMENT PRIMARY KEY,
-        `firstname` VARCHAR(30),
-        `lastname` VARCHAR(30),
+        `full_name` VARCHAR(60),
         `birth_date` DATE NOT NULL,
-        `username` VARCHAR(50),
-        `phone` INT(50),
-        `email` VARCHAR(180),
-        `password` VARCHAR(61),
-        `city` VARCHAR(20),
-        `country` VARCHAR(20),
-        `zip` VARCHAR(10),
+        `username` VARCHAR(50) NOT NULL,
+        `phone` INT(50) NOT NULL,
+        `email` VARCHAR(180) NOT NULL,
+        `password` VARCHAR(61) NOT NULL,
+        `city` VARCHAR(20) NOT NULL,
+        `country` VARCHAR(20) NOT NULL,
+        `zip` VARCHAR(10) NOT NULL,
         `account_type` LONGTEXT,
-        `photo` LONGBLOB,
+        `address` LONGTEXT,
+        `image` LONGBLOB,
         `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )ENGINE=InnoDB;";
 
@@ -84,27 +102,27 @@ class Database
     $this->disconnect();
   }
 
-  public function createTableImage()
-  {
-    try {
+  // public function createTableImage()
+  // {
+  //   try {
 
-      $sql = "CREATE TABLE IF NOT EXISTS `image` (
-        `id` INT(11) AUTO_INCREMENT PRIMARY KEY,
-        `type` VARCHAR(25) NOT NULL DEFAULT '',
-        `data` LONGBLOB NOT NULL,
-        member_id INT NOT NULL,
-        FOREIGN KEY (member_id) REFERENCES member(id)
-        ON DELETE CASCADE
-        ON UPDATE RESTRICT
-      )ENGINE=InnoDB;";
+  //     $sql = "CREATE TABLE IF NOT EXISTS `image` (
+  //       `id` INT(11) AUTO_INCREMENT PRIMARY KEY,
+  //       `type` VARCHAR(25) NOT NULL DEFAULT '',
+  //       `data` LONGBLOB NOT NULL,
+  //       member_id INT NOT NULL,
+  //       FOREIGN KEY (member_id) REFERENCES member(id)
+  //       ON DELETE CASCADE
+  //       ON UPDATE RESTRICT
+  //     )ENGINE=InnoDB;";
 
-      $this->getConnection()->exec($sql);
+  //     $this->getConnection()->exec($sql);
 
-      return true;
-    } catch (PDOException $th) {
-      return $th->getMessage();
-    }
+  //     return true;
+  //   } catch (PDOException $th) {
+  //     return $th->getMessage();
+  //   }
 
-    $this->disconnect();
-  }
+  //   $this->disconnect();
+  // }
 }

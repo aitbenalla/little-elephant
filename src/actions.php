@@ -7,10 +7,14 @@ if (isset($_POST['add_row']))
     $username_pattern = '/^[a-zA-Z0-9]{5,}$/';
     $pass_pattern = '/^.{8,}$/';
     $phone_pattern = '/^[0-9]{10}+$/';
+    $account_type = 'ROLE_MEMBER';
 
     foreach ($_POST as $key => $value) {
         switch ($key)
         {
+            case 'full_name':
+                $fullname = $value;
+                break;
             case 'birth_date':
                 if (validateAge($value))
                 {
@@ -82,38 +86,43 @@ if (isset($_POST['add_row']))
 
     if ($_FILES['photo']) {
         $imgData = addslashes(file_get_contents($_FILES['photo']['tmp_name']));
-        $imageProperties = getimageSize($_FILES['photo']['tmp_name']);
-
-        var_dump($imageProperties);
     }
 
-    // $sql = 'INSERT INTO members(birth_date,username,phone,email,password,city,country,zip) 
-    // VALUES(
-    //     :birth_date,
-    //     :username,
-    //     :phone,
-    //     :email,
-    //     :password,
-    //     :city,
-    //     :country,
-    //     :zip
-    //     )';
+    $sql = 'INSERT INTO member(full_name,birth_date,username,phone,email,password,address,city,country,zip,account_type,image) 
+    VALUES(
+        :full_name,
+        :birth_date,
+        :username,
+        :phone,
+        :email,
+        :password,
+        :address,
+        :city,
+        :country,
+        :zip,
+        :account_type,
+        :image
+        )';
 
-    // $stmt = $connection->prepare($sql);
-    // $stmt->bindParam(":birth_date", $birth);
-    // $stmt->bindParam(":username", $username);
-    // $stmt->bindParam(":phone", $phone);
-    // $stmt->bindParam(":email", $email);
-    // $stmt->bindParam(":password", $pass);
-    // $stmt->bindParam(":city", $city);
-    // $stmt->bindParam(":country", $country);
-    // $stmt->bindParam(":zip", $zip);
+    $stmt = $connection->prepare($sql);
+    $stmt->bindParam(":full_name", $fullname);
+    $stmt->bindParam(":birth_date", $birth);
+    $stmt->bindParam(":username", $username);
+    $stmt->bindParam(":phone", $phone);
+    $stmt->bindParam(":email", $email);
+    $stmt->bindParam(":password", $password);
+    $stmt->bindParam(":address", $address);
+    $stmt->bindParam(":city", $city);
+    $stmt->bindParam(":country", $country);
+    $stmt->bindParam(":zip", $zip);
+    $stmt->bindParam(":account_type", $account_type);
+    $stmt->bindParam(":image", $imgData);
 
-    // $stmt->execute();
+    $stmt->execute();
 
-    // $member_id = $connection->lastInsertId();
+    $member_id = $connection->lastInsertId();
 
-    // echo 'The publisher id ' . $member_id . ' was inserted';
+    getAlert('success','list.php','New Member Added');
 
 }
 

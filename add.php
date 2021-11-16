@@ -12,20 +12,16 @@ include './components/head.php' ?>
           <label for="inputPhoto" class="form-label">Photo</label>
           <input type="file" name="photo" class="form-control" id="inputPhoto">
         </div>
-        <!-- <div class="col-md-3">
-          <label for="inputFirstName" class="form-label">First Name</label>
-          <input type="text" name="firstname" class="form-control" id="inputFirstName">
-        </div>
-        <div class="col-md-3">
-          <label for="inputLastName" class="form-label">Last Name</label>
-          <input type="text" name="lastname" class="form-control" id="inputLastName">
+        <div class="col-md-6">
+          <label for="inputFullName" class="form-label">Full Name</label>
+          <input type="text" name="full_name" class="form-control" id="inputFullName">
         </div>
         <div class="col-md-6">
           <label for="inputUsername" class="form-label">Username</label>
           <input type="text" name="username" class="form-control" id="inputUsername" required>
         </div>
         <div class="col-md-6">
-          <label for="inputBirthDate" class="form-label">Birthdate</label>
+          <label for="inputBirthDate" class="form-label">Birth Date</label>
           <input type="date" name="birth_date" class="form-control" id="inputBirthDate" required>
         </div>
         <div class="col-md-6">
@@ -313,7 +309,7 @@ include './components/head.php' ?>
               Check me out
             </label>
           </div>
-        </div> -->
+        </div>
         <div class="col-12 text-center border-top p-4">
           <button type="submit" name="add_row" class="btn btn-primary">Add</button>
         </div>
