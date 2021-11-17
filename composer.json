@@ -1,0 +1,16 @@
+{
+    "name": "aitbenalla/little-elephant",
+    "type": "project",
+    "authors": [
+        {
+            "name": "Oussama Ait Benalla",
+            "email": "oussama@aitbenalla.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/"
+        }
+    },
+    "require": {}
+}
