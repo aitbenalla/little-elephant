@@ -5,16 +5,14 @@ use PDOException;
 
 class Database extends Exception
 {
-  private string $servername;
-  private string $username;
-  private string $password;
+  public string $servername;
+  public string $username;
+  public string $password;
 
   public function __construct()
   {
 
-    define('ROOTPATH', dirname(__FILE__));
-
-    $env_file = ROOTPATH . "/../env.json";
+    $env_file = getcwd() . "/../env.json";
 
     if (file_exists($env_file) && is_readable($env_file)) {
       $env_content = file_get_contents($env_file);
@@ -25,7 +23,7 @@ class Database extends Exception
       $this->password = $env['password'];
 
     } else {
-      $this->getAlert('error', '', 'Database configuration not found or not readable');
+      return false;
     }
 
   }
@@ -80,7 +78,7 @@ class Database extends Exception
   {
     try {
 
-      $sql = "CREATE TABLE IF NOT EXISTS `member` (
+      $sql = "CREATE TABLE `member` (
         `id` INT(11) AUTO_INCREMENT PRIMARY KEY,
         `full_name` VARCHAR(60),
         `birth_date` DATE NOT NULL,

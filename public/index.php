@@ -9,6 +9,9 @@ switch ($request) {
     case '/' :
         $app->index();
         break;
+    case '/home' :
+        $app->index();
+        break;
     case '/list' :
         $app->list();
         break;

@@ -1,8 +1,12 @@
 <?php
+
 namespace App\Controller;
+
+use App\Model\Database;
 use Smarty;
 
-class Controller extends Smarty {
+class Controller extends Smarty
+{
 
     function __construct()
     {
@@ -19,7 +23,11 @@ class Controller extends Smarty {
         $this->caching = Smarty::CACHING_LIFETIME_CURRENT;
 
         $this->setCaching(true);
-
+        $this->clearAllCache();
     }
-    
+
+    public function getDB()
+    {
+        return new Database();
+    }
 }
