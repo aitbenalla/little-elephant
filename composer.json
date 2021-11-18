@@ -12,5 +12,8 @@
             "App\\": "src/"
         }
     },
-    "require": {}
+    "require": {
+        "php": ">=8.0",
+        "smarty/smarty": "^3.1"
+    }
 }
