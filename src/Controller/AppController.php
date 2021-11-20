@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Member;
+use App\Model\MemberRepository;
 
 class AppController extends Controller
 {
@@ -51,7 +52,11 @@ class AppController extends Controller
 
     public function list()
     {
-        $this->display('list.tpl');
+        $repository = new MemberRepository();
+
+        $members = $repository->getAll();
+
+        $this->display('list.tpl', ['members' => $members]);
         //unset($_SESSION['flash']);
     }
 
@@ -66,15 +71,14 @@ class AppController extends Controller
                     case 'full_name':
                         if (preg_match(self::fullname_pattern, $value)) {
                             $member->setFullName($value);
-                        }
-                        else {
+                        } else {
                             $this->assign('flash', ['type' => 'danger', 'message' => 'Invalid name given.']);
                             $this->display('add.tpl');
                             exit;
                         }
                         break;
                     case 'birth_date':
-                        if (validateAge($value)) {
+                        if ($this->validateAge($value)) {
                             $member->setBirthDate($value);
                         } else {
                             $this->assign('flash', ['type' => 'danger', 'message' => 'You Must be 18 or Older.']);
@@ -113,7 +117,7 @@ class AppController extends Controller
                     case 'password':
                         if (preg_match(self::pass_pattern, $value)) {
                             if ($value === $_POST['password_repeat']) {
-                                $member->setPhone($this->hashThePass($value));
+                                $member->setPassword($this->hashThePass($value));
                             } else {
                                 $this->assign('flash', ['type' => 'danger', 'message' => 'Passwords not match.']);
                                 $this->display('add.tpl');
@@ -141,10 +145,17 @@ class AppController extends Controller
                 }
             }
 
-            $this->assign('flash', ['type' => 'success', 'message' => 'New Row Added. <a href="/list">Go To List</a>']);
+            $repository = new MemberRepository();
+
+            $result = $repository->add($member);
+
+            if ($result) {
+                $this->assign('flash', ['type' => 'success', 'message' => 'New Row Added. <a href="/list">Go To List</a>']);
+            }
+
             //$_SESSION['flash'] = 'New Row Added.';
             //header('Location:/list');
-             
+
         }
 
         $this->display('add.tpl');
@@ -180,6 +191,4 @@ class AppController extends Controller
         ];
         return password_hash($pass, PASSWORD_BCRYPT, $options);
     }
-
-
 }

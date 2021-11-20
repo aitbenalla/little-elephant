@@ -34,7 +34,6 @@ class Database extends Exception
     try {
       $connection = new PDO("mysql:host=$this->servername;dbname=little-elephant", $this->username, $this->password);
       $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
       return $connection;
     } catch (PDOException $th) {
 
