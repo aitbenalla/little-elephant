@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Controller;
 
 use App\Model\Database;
@@ -10,7 +9,7 @@ class Controller extends Smarty
 
     function __construct()
     {
-
+        session_start();
         // Class Constructor.
         // These automatically get set with each new instance.
 
@@ -29,5 +28,10 @@ class Controller extends Smarty
     public function getDB()
     {
         return new Database();
+    }
+
+    public function render($page, Array $val){
+        $this->assign('flash', ['type' => $val[0], 'message' => $val[1]]);
+        $this->display($page);
     }
 }
