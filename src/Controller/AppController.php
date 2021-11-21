@@ -2,8 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\Media;
 use App\Entity\Member;
 use App\Model\MemberRepository;
+use App\Model\MediaRepository;
 
 class AppController extends Controller
 {
@@ -33,11 +35,12 @@ class AppController extends Controller
                 }
                 if ($_POST['db_execute'] === '3' && is_object($this->getDB()->getConnection())) {
                     $member = $this->getDB()->createTableMember();
+                    $media = $this->getDB()->createTableMedia();
 
-                    if ($member === true) {
+                    if ($member === true && $media === true) {
                         $this->assign('flash', ['type' => 'success', 'message' => 'Tables created successfully']);
                     } else {
-                        $this->assign('flash', ['type' => 'danger', 'message' => $member]);
+                        $this->assign('flash', ['type' => 'danger', 'message' => 'Tables cannot be created or all ready created']);
                     }
                 } else if ($_POST['db_execute'] === '3' && !is_object($this->getDB()->getConnection())) {
                     $this->assign('flash', ['type' => 'danger', 'message' => $this->getDB()->getConnection()]);
@@ -147,7 +150,21 @@ class AppController extends Controller
 
             $repository = new MemberRepository();
 
-            $result = $repository->add($member);
+            $result = $repository->flush($member);
+
+            if($result && !empty($_FILES["photo"]["name"])) { 
+                $media = new Media();
+                $mediaRepository = new MediaRepository();
+                $imgData = file_get_contents($_FILES['photo']['tmp_name']);
+                $imgName = basename($_FILES["photo"]["name"]); 
+                $imgType = pathinfo($imgName, PATHINFO_EXTENSION);
+
+                $media->setName($imgData);
+                $media->setType($imgType);
+                $media->setMember($result);
+
+                $mediaRepository->flush($media);
+            }
 
             if ($result) {
                 $this->assign('flash', ['type' => 'success', 'message' => 'New Row Added. <a href="/list">Go To List</a>']);

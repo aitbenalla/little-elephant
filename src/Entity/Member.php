@@ -5,43 +5,48 @@ namespace App\Entity;
 
 class Member
 {
-    private string $fullname;
-    private string $birthdate;
+    private int $id;
+    private string $full_name;
+    private string $birth_date;
     private string $username;
     private int $phone;
     private string $email;
     private string $password;
     private string $city;
     private string $country;
-    private string $account_type;
+    private string $role;
     private string $address;
-    private string $image;
     private string $zip;
     private string $created_at;
 
     public function __construct()
     {
-        $this->account_type = 'ROLE_MEMBER';
+        $this->role = 'ROLE_MEMBER';
+    }
+
+    public function getId()
+    {
+        return $this->id;
     }
 
     public function getFullName()
     {
-        return $this->fullname;
+        return $this->full_name;
     }
 
-    public function setFullName($fullname)
+    public function setFullName($full_name)
     {
-        $this->fullname = $fullname;
+        $this->full_name = $full_name;
     }
 
     public function getBirthDate()
     {
-        return $this->birthdate;
+        return $this->birth_date;
     }
 
-    public function setBirthDate($birthdate)
+    public function setBirthDate($birth_date)
     {
-        $this->birthdate = $birthdate;
+        $this->birth_date = $birth_date;
     }
 
     public function getUsername()
@@ -102,14 +107,14 @@ class Member
     {
         $this->country = $country;
     }
-    public function getAccountType()
+    public function getRole()
     {
-        return $this->account_type;
+        return $this->role;
     }
 
-    public function setAccountType($account_type)
+    public function setRole($role)
     {
-        $this->account_type = $account_type;
+        $this->role = $role;
     }
     public function getAddress()
     {
@@ -135,5 +140,9 @@ class Member
     public function setZip($zip)
     {
         $this->zip = $zip;
+    }
+    public function getCreatedAt()
+    {
+        return $this->created_at;
     }
 }

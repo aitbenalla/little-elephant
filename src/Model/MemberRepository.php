@@ -3,36 +3,39 @@
 namespace App\Model;
 
 use App\Entity\Member;
+use PDO;
 
 class MemberRepository extends Database
 {
 
     public function getAll()
     {
-        $sql = 'SELECT * FROM member';
-        $members = $this->getConnection()->query($sql)->fetchAll();
+        $sql = 'SELECT member.*, media.name, media.type
+        FROM member
+        LEFT JOIN media ON member.id = media.member_id';
+        $members = $this->getConnection()->query($sql)->fetchAll(PDO::FETCH_CLASS, Member::class);
 
         return $members;
     }
 
-    public function add(Member $member)
+    public function flush(Member $member)
     {
         $conn = $this->getConnection();
-        $sql = 'INSERT INTO member(full_name,birth_date,username,phone,email,password,address,city,country,zip,account_type) 
-    VALUES(
-        :full_name,
-        :birth_date,
-        :username,
-        :phone,
-        :email,
-        :password,
-        :address,
-        :city,
-        :country,
-        :zip,
-        :account_type
-        
-        )';
+        $sql = 'INSERT INTO member(full_name,birth_date,username,phone,email,password,address,city,country,zip,role) 
+        VALUES(
+            :full_name,
+            :birth_date,
+            :username,
+            :phone,
+            :email,
+            :password,
+            :address,
+            :city,
+            :country,
+            :zip,
+            :role
+            
+            )';
  
         $stmt = $conn->prepare($sql);
         $stmt->bindValue(":full_name", $member->getFullName());
@@ -45,8 +48,7 @@ class MemberRepository extends Database
         $stmt->bindValue(":city", $member->getCity());
         $stmt->bindValue(":country", $member->getCountry());
         $stmt->bindValue(":zip", $member->getZip());
-        $stmt->bindValue(":account_type", $member->getAccountType());
-        //$stmt->bindValue(":image", $imgData);
+        $stmt->bindValue(":role", $member->getRole());
    
         $stmt->execute();
       

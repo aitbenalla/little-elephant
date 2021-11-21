@@ -24,28 +24,28 @@
             <th>Phone</th>
             <th>Location</th>
             <th>Role</th>
-            <th>Created At</th>
+            <th>Role</th>
             <th>Action</th>
           </tr>
         </thead>
         <tbody>
-          {foreach from=$members item=member key=key name=name}
-          <tr>
-            <td>{$member.id}</td>
-            <td>#</td>
-            <td>{$member.full_name}</td>
-            <td>{$member.username}</td>
-            <td>{$member.birth_date}</td>
-            <td>{$member.email}</td>
-            <td>{$member.phone}</td>
-            <td>{$member.country} / {$member.city}</td>
-            <td>{$member.account_type}</td>
-            <td>{$member.created_at}</td>
-            <td>
-              <a class="btn btn-sm btn-warning mb-2" href="#">Edit</a>
-              <a class="btn btn-sm btn-danger" href="#">Delete</a>
-            </td>
-          </tr>
+          {foreach from=$members item=member}
+            <tr>
+              <td>{$member->getId()}</td>
+              <td><img src="data:image/png;base64,{$member->name|base64_encode}" height="40"/>
+              <td>{$member->getFullName()}</td>
+              <td>{$member->getUsername()}</td>
+              <td>{$member->getBirthdate()}</td>
+              <td>{$member->getEmail()}</td>
+              <td>0{$member->getPhone()}</td>
+              <td>{$member->getCity()} / {$member->getCountry()}</td>
+              <td>{$member->getRole()}</td>
+              <td>{$member->getCreatedAt()}</td>
+              <td> 
+                <a class="btn btn-sm btn-warning mb-2" href="#">Edit</a>
+                <a class="btn btn-sm btn-danger" href="#">Delete</a>
+              </td>
+            </tr>
           {/foreach}
         </tbody>
       </table>

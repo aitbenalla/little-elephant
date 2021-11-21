@@ -32,7 +32,7 @@ class Database extends Exception
   {
 
     try {
-      $connection = new PDO("mysql:host=$this->servername;dbname=little-elephant", $this->username, $this->password);
+      $connection = new PDO("mysql:host=$this->servername;dbname=little_elephant", $this->username, $this->password);
       $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
       return $connection;
     } catch (PDOException $th) {
@@ -63,7 +63,21 @@ class Database extends Exception
   {
     try {
       $conn = $this->getServer();
-      $sql = "CREATE DATABASE `little-elephant`";
+      $sql = "CREATE DATABASE `little_elephant`";
+      $conn->exec($sql);
+      return true;
+    } catch (PDOException $th) {
+      return $th->getMessage();
+    }
+
+    $this->disconnect();
+  }
+
+  public function dropDatabase()
+  {
+    try {
+      $conn = $this->getServer();
+      $sql = "DROP DATABASE `little_elephant`";
       $conn->exec($sql);
       return true;
     } catch (PDOException $th) {
@@ -88,9 +102,8 @@ class Database extends Exception
         `city` VARCHAR(20) NOT NULL,
         `country` VARCHAR(20) NOT NULL,
         `zip` VARCHAR(10) NOT NULL,
-        `account_type` LONGTEXT,
+        `role` LONGTEXT,
         `address` LONGTEXT,
-        `image` LONGBLOB,
         `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )ENGINE=InnoDB;";
 
@@ -104,27 +117,27 @@ class Database extends Exception
     $this->disconnect();
   }
 
-  // public function createTableImage()
-  // {
-  //   try {
+  public function createTableMedia()
+  {
+    try {
 
-  //     $sql = "CREATE TABLE IF NOT EXISTS `image` (
-  //       `id` INT(11) AUTO_INCREMENT PRIMARY KEY,
-  //       `type` VARCHAR(25) NOT NULL DEFAULT '',
-  //       `data` LONGBLOB NOT NULL,
-  //       member_id INT NOT NULL,
-  //       FOREIGN KEY (member_id) REFERENCES member(id)
-  //       ON DELETE CASCADE
-  //       ON UPDATE RESTRICT
-  //     )ENGINE=InnoDB;";
+      $sql = "CREATE TABLE IF NOT EXISTS `media` (
+        `id` INT(11) AUTO_INCREMENT PRIMARY KEY,
+        `type` VARCHAR(25) NOT NULL,
+        `name` LONGBLOB NOT NULL,
+        member_id INT NOT NULL,
+        FOREIGN KEY (member_id) REFERENCES member(id)
+        ON DELETE CASCADE
+        ON UPDATE RESTRICT
+      )ENGINE=InnoDB;";
 
-  //     $this->getConnection()->exec($sql);
+      $this->getConnection()->exec($sql);
 
-  //     return true;
-  //   } catch (PDOException $th) {
-  //     return $th->getMessage();
-  //   }
+      return true;
+    } catch (PDOException $th) {
+      return $th->getMessage();
+    }
 
-  //   $this->disconnect();
-  // }
+    $this->disconnect();
+  }
 }

@@ -23,6 +23,8 @@ class Controller extends Smarty
 
         $this->setCaching(true);
         $this->clearAllCache();
+
+        $this->registerPlugin("modifier",'base64_encode',  'base64_encode');
     }
 
     public function getDB()
