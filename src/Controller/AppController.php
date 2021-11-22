@@ -152,11 +152,11 @@ class AppController extends Controller
 
             $result = $repository->flush($member);
 
-            if($result && !empty($_FILES["photo"]["name"])) { 
+            if ($result && !empty($_FILES["photo"]["name"])) {
                 $media = new Media();
                 $mediaRepository = new MediaRepository();
                 $imgData = file_get_contents($_FILES['photo']['tmp_name']);
-                $imgName = basename($_FILES["photo"]["name"]); 
+                $imgName = basename($_FILES["photo"]["name"]);
                 $imgType = pathinfo($imgName, PATHINFO_EXTENSION);
 
                 $media->setName($imgData);
@@ -181,6 +181,32 @@ class AppController extends Controller
     public function error()
     {
         echo '404';
+    }
+
+    public function editMember(int $id)
+    {
+        $rep = new MemberRepository();
+        $member = $rep->getOneById($id);
+
+        if (isset($_POST['edit_row'])) {
+            var_dump($_POST);
+        }
+
+        if ($member) {
+            $this->assign('member', $member);
+
+            $this->display('add.tpl');
+        }
+        else
+        {
+            $this->error();
+        }
+
+
+    }
+
+    public function deleteMember(int $id)
+    {
     }
 
     private function validateAge($date, $age = 18)

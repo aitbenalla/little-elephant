@@ -42,8 +42,8 @@
               <td>{$member->getRole()}</td>
               <td>{$member->getCreatedAt()}</td>
               <td> 
-                <a class="btn btn-sm btn-warning mb-2" href="#">Edit</a>
-                <a class="btn btn-sm btn-danger" href="#">Delete</a>
+                <a class="btn btn-sm btn-warning mb-2" href="/edit_member?id={$member->getId()}">Edit</a>
+                <a class="btn btn-sm btn-danger" href="/delete_member?id={$member->getId()}">Delete</a>
               </td>
             </tr>
           {/foreach}

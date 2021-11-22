@@ -18,6 +18,17 @@ class MemberRepository extends Database
         return $members;
     }
 
+    public function getOneById(int $id)
+    {
+        $conn = $this->getConnection();
+        $stmt = $conn->prepare('SELECT * FROM member WHERE id=? LIMIT 1');
+
+        $stmt->execute([$id]);
+        $stmt->setFetchMode(PDO::FETCH_CLASS, Member::class);
+
+        return $stmt->fetch();
+    }
+
     public function flush(Member $member)
     {
         $conn = $this->getConnection();
@@ -36,7 +47,7 @@ class MemberRepository extends Database
             :role
             
             )';
- 
+
         $stmt = $conn->prepare($sql);
         $stmt->bindValue(":full_name", $member->getFullName());
         $stmt->bindValue(":birth_date", $member->getBirthDate());
@@ -49,11 +60,19 @@ class MemberRepository extends Database
         $stmt->bindValue(":country", $member->getCountry());
         $stmt->bindValue(":zip", $member->getZip());
         $stmt->bindValue(":role", $member->getRole());
-   
+
         $stmt->execute();
-      
+
         $member_id = $conn->lastInsertId();
 
         return $member_id;
+    }
+
+    public function edit(int $id)
+    {
+    }
+
+    public function delete(int $id)
+    {
     }
 }
