@@ -11,7 +11,7 @@ if ($_GET) {
     switch ($request) {
         case '/edit_member?id=' . $_GET['id']:
             if (preg_match('/^\d+$/', $_GET['id'])) {
-                $app->editMember($_GET['id']);
+                $app->save($_GET['id']);
             } else {
                 echo 'invalid ID';
             }
@@ -41,7 +41,7 @@ if ($_GET) {
             $app->list();
             break;
         case '/add':
-            $app->add();
+            $app->save();
             break;
         default:
             http_response_code(404);

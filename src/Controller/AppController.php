@@ -63,11 +63,22 @@ class AppController extends Controller
         //unset($_SESSION['flash']);
     }
 
-    public function add()
+    public function save($id = null)
     {
-        if (isset($_POST['add_row'])) {
+        $repository = new MemberRepository();
 
+        if (!$id) {
             $member = new Member();
+        } else {
+
+            $member = $repository->getOneById($id);
+
+            if ($member) {
+                $this->assign('member', $member);
+            }
+        }
+
+        if (isset($_POST['save'])) {
 
             foreach ($_POST as $key => $value) {
                 switch ($key) {
@@ -148,8 +159,6 @@ class AppController extends Controller
                 }
             }
 
-            $repository = new MemberRepository();
-
             $result = $repository->flush($member);
 
             if ($result && !empty($_FILES["photo"]["name"])) {
@@ -167,7 +176,7 @@ class AppController extends Controller
             }
 
             if ($result) {
-                $this->assign('flash', ['type' => 'success', 'message' => 'New Row Added. <a href="/list">Go To List</a>']);
+                $this->assign('flash', ['type' => 'success', 'message' => 'Saved. <a href="/list">Go To List</a>']);
             }
 
             //$_SESSION['flash'] = 'New Row Added.';
@@ -175,34 +184,12 @@ class AppController extends Controller
 
         }
 
-        $this->display('add.tpl');
+        $this->display('form.tpl');
     }
 
     public function error()
     {
         echo '404';
-    }
-
-    public function editMember(int $id)
-    {
-        $rep = new MemberRepository();
-        $member = $rep->getOneById($id);
-
-        if (isset($_POST['edit_row'])) {
-            var_dump($_POST);
-        }
-
-        if ($member) {
-            $this->assign('member', $member);
-
-            $this->display('add.tpl');
-        }
-        else
-        {
-            $this->error();
-        }
-
-
     }
 
     public function deleteMember(int $id)
