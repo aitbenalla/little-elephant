@@ -31,8 +31,6 @@ class MemberRepository extends Database
 
     public function flush(Member $member)
     {
-        var_dump($member->getId());die;
-        $conn = $this->getConnection();
         $sql = 'INSERT INTO member(full_name,birth_date,username,phone,email,password,address,city,country,zip,role) 
         VALUES(
             :full_name,
@@ -49,7 +47,29 @@ class MemberRepository extends Database
             
             )';
 
+        if ($member->getId()) {
+            $sql = 'UPDATE member SET 
+            full_name = :full_name,
+            birth_date = :birth_date,
+            username = :username,
+            phone = :phone,
+            email = :email,
+            password = :password,
+            address = :address,
+            city = :city,
+            country = :country,
+            zip = :zip,
+            role = :role
+            WHERE id = :id
+            ';
+        }
+
+        $conn = $this->getConnection();
+
         $stmt = $conn->prepare($sql);
+        if ($member->getId()) {
+            $stmt->bindValue(":id", $member->getId());
+        }
         $stmt->bindValue(":full_name", $member->getFullName());
         $stmt->bindValue(":birth_date", $member->getBirthDate());
         $stmt->bindValue(":username", $member->getUsername());

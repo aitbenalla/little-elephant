@@ -87,7 +87,7 @@ class AppController extends Controller
                             $member->setFullName($value);
                         } else {
                             $this->assign('flash', ['type' => 'danger', 'message' => 'Invalid name given.']);
-                            $this->display('add.tpl');
+                            $this->display('form.tpl');
                             exit;
                         }
                         break;
@@ -96,7 +96,7 @@ class AppController extends Controller
                             $member->setBirthDate($value);
                         } else {
                             $this->assign('flash', ['type' => 'danger', 'message' => 'You Must be 18 or Older.']);
-                            $this->display('add.tpl');
+                            $this->display('form.tpl');
                             exit;
                         }
                         break;
@@ -105,7 +105,7 @@ class AppController extends Controller
                             $member->setUsername($value);
                         } else {
                             $this->assign('flash', ['type' => 'danger', 'message' => 'Invalid username.']);
-                            $this->display('add.tpl');
+                            $this->display('form.tpl');
                             exit;
                         }
                         break;
@@ -114,7 +114,7 @@ class AppController extends Controller
                             $member->setPhone(trim($value));
                         } else {
                             $this->assign('flash', ['type' => 'danger', 'message' => 'Invalid phone.']);
-                            $this->display('add.tpl');
+                            $this->display('form.tpl');
                             exit;
                         }
                         break;
@@ -124,7 +124,7 @@ class AppController extends Controller
                             $member->setEmail(trim($value));
                         } else {
                             $this->assign('flash', ['type' => 'danger', 'message' => 'Invalid Email.']);
-                            $this->display('add.tpl');
+                            $this->display('form.tpl');
                             exit;
                         }
                         break;
@@ -134,12 +134,12 @@ class AppController extends Controller
                                 $member->setPassword($this->hashThePass($value));
                             } else {
                                 $this->assign('flash', ['type' => 'danger', 'message' => 'Passwords not match.']);
-                                $this->display('add.tpl');
+                                $this->display('form.tpl');
                                 exit;
                             }
                         } else {
                             $this->assign('flash', ['type' => 'danger', 'message' => 'Password not strong enough / Password too short.']);
-                            $this->display('add.tpl');
+                            $this->display('form.tpl');
                             exit;
                         }
                     case 'address':

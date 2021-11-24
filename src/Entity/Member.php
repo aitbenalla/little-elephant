@@ -5,7 +5,7 @@ namespace App\Entity;
 
 class Member
 {
-    private int $id;
+    private ?int $id = null;
     private string $full_name;
     private string $birth_date;
     private string $username;
