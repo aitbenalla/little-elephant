@@ -174,8 +174,9 @@ class AppController extends Controller
 
                 $mediaRepository->flush($media);
             }
-
+            
             if ($result) {
+                
                 $this->assign('flash', ['type' => 'success', 'message' => 'Saved. <a href="/list">Go To List</a>']);
             }
 

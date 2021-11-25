@@ -86,6 +86,10 @@ class MemberRepository extends Database
 
         $member_id = $conn->lastInsertId();
 
+        if ($member->getId()) {
+            return $member->getId();
+        }
+
         return $member_id;
     }
 
