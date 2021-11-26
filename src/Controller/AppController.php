@@ -172,7 +172,7 @@ class AppController extends Controller
                 $media->setType($imgType);
                 $media->setMember($result);
 
-                $mediaRepository->flush($media);
+                $mediaRepository->flush($media, $id);
             }
             
             if ($result) {
@@ -195,6 +195,16 @@ class AppController extends Controller
 
     public function deleteMember(int $id)
     {
+        $repository = new MemberRepository();
+
+        $request = $repository->delete($id);
+
+        if ($request) {
+
+            $this->assign('flash', ['type' => 'success', 'message' => 'Successfully Deleted']);
+
+            //$this->display('list.tpl');
+        }
     }
 
     private function validateAge($date, $age = 18)

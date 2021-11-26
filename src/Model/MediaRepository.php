@@ -15,15 +15,20 @@ class MediaRepository extends Database
         return $medias;
     }
 
-    public function flush(Media $media)
+    public function flush(Media $media, $id = null)
     {
         $conn = $this->getConnection();
+
         $sql = 'INSERT INTO media(name,type,member_id) 
-        VALUES(
-            :name,
-            :type,
-            :member_id
-            )';
+                VALUES(
+                    :name,
+                    :type,
+                    :member_id
+                    )';
+        
+        if ($id) {
+            $sql = 'UPDATE media SET name=:name, type=:type WHERE member_id = :member_id';
+        }
 
         $stmt = $conn->prepare($sql);
         $stmt->bindValue(":name", $media->getName());

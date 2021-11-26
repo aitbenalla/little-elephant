@@ -93,11 +93,11 @@ class MemberRepository extends Database
         return $member_id;
     }
 
-    public function edit(int $id)
-    {
-    }
-
     public function delete(int $id)
     {
+        $stmt = $this->getConnection()->prepare( "DELETE FROM member WHERE id=:id" );
+        $stmt->bindParam(':id', $id);
+        $stmt->execute();
+        if( $stmt->rowCount() ) return true;
     }
 }
