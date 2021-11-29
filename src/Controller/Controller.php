@@ -1,10 +1,11 @@
 <?php
+
 namespace App\Controller;
 
 use App\Model\Database;
-use Smarty;
+use SmartyBC;
 
-class Controller extends Smarty
+class Controller extends SmartyBC
 {
 
     function __construct()
@@ -19,12 +20,15 @@ class Controller extends Smarty
         $this->setCompileDir(getcwd() . '/../var/templates_c/');
         $this->setConfigDir(getcwd() . '/../configs/');
         $this->setCacheDir(getcwd() . '/../var/cache/');
-        $this->caching = Smarty::CACHING_LIFETIME_CURRENT;
+        $this->caching = SmartyBC::CACHING_LIFETIME_CURRENT;
+
+        $this->error_reporting = E_ERROR | E_WARNING | E_PARSE;
 
         $this->setCaching(true);
         $this->clearAllCache();
 
-        $this->registerPlugin("modifier",'base64_encode',  'base64_encode');
+        $this->registerPlugin("modifier", 'base64_encode',  'base64_encode');
+
     }
 
     public function getDB()
@@ -32,8 +36,13 @@ class Controller extends Smarty
         return new Database();
     }
 
-    public function render($page, Array $val){
-        $this->assign('flash', ['type' => $val[0], 'message' => $val[1]]);
-        $this->display($page);
+    function flash(string $message, string $type): void
+    {
+        // remove existing message with the name
+        if (isset($_SESSION['flash'])) {
+            unset($_SESSION['flash']);
+        }
+        // add the message to the session
+        $_SESSION['flash'] = ['message' => $message, 'type' => $type];
     }
 }

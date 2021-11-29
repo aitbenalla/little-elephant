@@ -60,7 +60,6 @@ class AppController extends Controller
         $members = $repository->getAll();
 
         $this->display('list.tpl', ['members' => $members]);
-        //unset($_SESSION['flash']);
     }
 
     public function save($id = null)
@@ -196,14 +195,14 @@ class AppController extends Controller
     public function deleteMember(int $id)
     {
         $repository = new MemberRepository();
-
+        
         $request = $repository->delete($id);
 
         if ($request) {
 
-            $this->assign('flash', ['type' => 'success', 'message' => 'Successfully Deleted']);
+            $this->flash('Member Deleted', 'danger');
 
-            //$this->display('list.tpl');
+            header("Refresh:0; url=/list");
         }
     }
 

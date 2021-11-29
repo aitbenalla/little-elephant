@@ -1,12 +1,13 @@
 {include file="components/head.tpl"}
 {include file="components/navbar.tpl"}
 <div class="container mt-4">
-  {if isset($flash)}
-    <div class='alert alert-{$flash.type}' role='alert'>{$flash.message}</div>
+  {if isset($smarty.session.flash)}
+  {$type = $smarty.session.flash.type}
+    <div class='alert alert-{$type}' role='alert'>{$smarty.session.flash.message}</div>
+    {php}
+      unset($_SESSION['FLASH_MESSAGES']);
+    {/php}
   {/if}
-  {* {if isset($smarty.session.flash)}
-    <div class='alert alert-danger' role='alert'>{$smarty.session.flash}</div>
-  {/if} *}
   {block name=content}{/block}
 </div>
 {include file="components/footer.tpl"}
