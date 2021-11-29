@@ -5,7 +5,7 @@
   {$type = $smarty.session.flash.type}
     <div class='alert alert-{$type}' role='alert'>{$smarty.session.flash.message}</div>
     {php}
-      unset($_SESSION['FLASH_MESSAGES']);
+      unset($_SESSION['flash']);
     {/php}
   {/if}
   {block name=content}{/block}
