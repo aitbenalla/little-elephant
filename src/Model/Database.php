@@ -1,9 +1,11 @@
 <?php
+
 namespace App\Model;
+
 use PDO;
 use PDOException;
 
-class Database extends Exception
+class Database
 {
   public string $servername;
   public string $username;
@@ -21,11 +23,9 @@ class Database extends Exception
       $this->servername = $env['servername'];
       $this->username = $env['username'];
       $this->password = $env['password'];
-
     } else {
       return false;
     }
-
   }
 
   public function getConnection()
@@ -87,11 +87,11 @@ class Database extends Exception
     $this->disconnect();
   }
 
-  public function createTableMember()
+  public function createTableAuthor()
   {
     try {
 
-      $sql = "CREATE TABLE `member` (
+      $sql = "CREATE TABLE `author` (
         `id` INT(11) AUTO_INCREMENT PRIMARY KEY,
         `full_name` VARCHAR(60),
         `birth_date` DATE NOT NULL,
@@ -117,16 +117,40 @@ class Database extends Exception
     $this->disconnect();
   }
 
+  public function createTablePost()
+  {
+    try {
+
+      $sql = "CREATE TABLE `post` (
+        `id` INT(11) AUTO_INCREMENT PRIMARY KEY,
+        `title` VARCHAR(180),
+        `content` LONGTEXT,
+        `updated_at` DATE,
+        `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        author_id INT NOT NULL,
+        FOREIGN KEY (author_id) REFERENCES author(id)
+      )ENGINE=InnoDB;";
+
+      $this->getConnection()->exec($sql);
+
+      return true;
+    } catch (PDOException $th) {
+      return $th->getMessage();
+    }
+
+    $this->disconnect();
+  }
+
   public function createTableMedia()
   {
     try {
 
-      $sql = "CREATE TABLE IF NOT EXISTS `media` (
+      $sql = "CREATE TABLE `media` (
         `id` INT(11) AUTO_INCREMENT PRIMARY KEY,
         `type` VARCHAR(25) NOT NULL,
         `name` LONGBLOB NOT NULL,
-        member_id INT NOT NULL,
-        FOREIGN KEY (member_id) REFERENCES member(id)
+        author_id INT NOT NULL,
+        FOREIGN KEY (author_id) REFERENCES author(id)
         ON DELETE CASCADE
         ON UPDATE RESTRICT
       )ENGINE=InnoDB;";

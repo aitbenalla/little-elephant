@@ -22,31 +22,31 @@ class AppController extends Controller
             if (is_object($this->getDB()->getServer())) {
 
                 if ($_POST['db_execute'] === '1') {
-                    $this->assign('flash', ['type' => 'success', 'message' => 'Connection succeeded']);
+                    $this->flash('Connection succeeded', 'success');
                 }
                 if ($_POST['db_execute'] === '2') {
                     $creating = $this->getDB()->createDatabase();
 
                     if ($creating === true) {
-                        $this->assign('flash', ['type' => 'success', 'message' => 'Database created successfully']);
+                        $this->flash('Database created successfully', 'success');
                     } else {
-                        $this->assign('flash', ['type' => 'danger', 'message' => $creating]);
+                        $this->flash($creating, 'danger');
                     }
                 }
                 if ($_POST['db_execute'] === '3' && is_object($this->getDB()->getConnection())) {
-                    $member = $this->getDB()->createTableMember();
+                    $member = $this->getDB()->createTableAuthor();
                     $media = $this->getDB()->createTableMedia();
 
                     if ($member === true && $media === true) {
-                        $this->assign('flash', ['type' => 'success', 'message' => 'Tables created successfully']);
+                        $this->flash('Tables created successfully', 'success');
                     } else {
-                        $this->assign('flash', ['type' => 'danger', 'message' => 'Tables cannot be created or all ready created']);
+                        $this->flash('Tables cannot be created or all ready created', 'danger');
                     }
                 } else if ($_POST['db_execute'] === '3' && !is_object($this->getDB()->getConnection())) {
-                    $this->assign('flash', ['type' => 'danger', 'message' => $this->getDB()->getConnection()]);
+                    $this->flash($this->getDB()->getConnection(), 'danger');
                 }
             } else {
-                $this->assign('flash', ['type' => 'danger', 'message' => $this->getDB()->getServer()]);
+                $this->flash($this->getDB()->getServer(), 'danger');
             }
         }
 
@@ -85,8 +85,8 @@ class AppController extends Controller
                         if (preg_match(self::fullname_pattern, $value)) {
                             $member->setFullName($value);
                         } else {
-                            $this->assign('flash', ['type' => 'danger', 'message' => 'Invalid name given.']);
-                            $this->display('form.tpl');
+                            $this->flash('Invalid name given.', 'danger');
+                            header("Refresh:0");
                             exit;
                         }
                         break;
@@ -94,8 +94,8 @@ class AppController extends Controller
                         if ($this->validateAge($value)) {
                             $member->setBirthDate($value);
                         } else {
-                            $this->assign('flash', ['type' => 'danger', 'message' => 'You Must be 18 or Older.']);
-                            $this->display('form.tpl');
+                            $this->flash('You Must be 18 or Older.', 'danger');
+                            header("Refresh:0");
                             exit;
                         }
                         break;
@@ -103,8 +103,8 @@ class AppController extends Controller
                         if (preg_match(self::username_pattern, $value)) {
                             $member->setUsername($value);
                         } else {
-                            $this->assign('flash', ['type' => 'danger', 'message' => 'Invalid username.']);
-                            $this->display('form.tpl');
+                            $this->flash('Invalid username.', 'danger');
+                            header("Refresh:0");
                             exit;
                         }
                         break;
@@ -112,8 +112,8 @@ class AppController extends Controller
                         if (preg_match(self::phone_pattern, $value)) {
                             $member->setPhone(trim($value));
                         } else {
-                            $this->assign('flash', ['type' => 'danger', 'message' => 'Invalid phone.']);
-                            $this->display('form.tpl');
+                            $this->flash('Invalid phone number.', 'danger');
+                            header("Refresh:0");
                             exit;
                         }
                         break;
@@ -122,8 +122,8 @@ class AppController extends Controller
                         if (preg_match(self::email_pattern, $value)) {
                             $member->setEmail(trim($value));
                         } else {
-                            $this->assign('flash', ['type' => 'danger', 'message' => 'Invalid Email.']);
-                            $this->display('form.tpl');
+                            $this->flash('Invalid Email address.', 'danger');
+                            header("Refresh:0");
                             exit;
                         }
                         break;
@@ -132,13 +132,13 @@ class AppController extends Controller
                             if ($value === $_POST['password_repeat']) {
                                 $member->setPassword($this->hashThePass($value));
                             } else {
-                                $this->assign('flash', ['type' => 'danger', 'message' => 'Passwords not match.']);
-                                $this->display('form.tpl');
+                                $this->flash('Passwords not match.', 'danger');
+                                header("Refresh:0");
                                 exit;
                             }
                         } else {
-                            $this->assign('flash', ['type' => 'danger', 'message' => 'Password not strong enough / Password too short.']);
-                            $this->display('form.tpl');
+                            $this->flash('Password not strong enough / Password too short.', 'danger');
+                            header("Refresh:0");
                             exit;
                         }
                     case 'address':
@@ -173,15 +173,11 @@ class AppController extends Controller
 
                 $mediaRepository->flush($media, $id);
             }
-            
+
             if ($result) {
-                
-                $this->assign('flash', ['type' => 'success', 'message' => 'Saved. <a href="/list">Go To List</a>']);
+
+                $this->flash('Saved. <a href="/list">Go To List</a>', 'success');
             }
-
-            //$_SESSION['flash'] = 'New Row Added.';
-            //header('Location:/list');
-
         }
 
         $this->display('form.tpl');
@@ -195,7 +191,7 @@ class AppController extends Controller
     public function deleteMember(int $id)
     {
         $repository = new MemberRepository();
-        
+
         $request = $repository->delete($id);
 
         if ($request) {
