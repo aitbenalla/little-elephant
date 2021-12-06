@@ -6,6 +6,7 @@ use App\Entity\Media;
 use App\Entity\Member;
 use App\Model\MemberRepository;
 use App\Model\MediaRepository;
+use SmartyException;
 
 class AppController extends Controller
 {
@@ -14,8 +15,11 @@ class AppController extends Controller
     const username_pattern = "/^[a-zA-Z0-9]{5,}$/";
     const pass_pattern = "/^.{8,}$/";
     const phone_pattern = "/^[0-9]{10}+$/";
-    const fullname_pattern = "/^([a-zA-Z' ]+)$/";
+    const full_name_pattern = "/^([a-zA-Z' ]+)$/";
 
+    /**
+     * @throws SmartyException
+     */
     public function index()
     {
         if (isset($_POST['db_execute']) && !empty($_POST['db_execute'])) {
@@ -53,6 +57,9 @@ class AppController extends Controller
         $this->display('home.tpl');
     }
 
+    /**
+     * @throws SmartyException
+     */
     public function list()
     {
         $repository = new MemberRepository();
@@ -62,6 +69,9 @@ class AppController extends Controller
         $this->display('list.tpl', ['members' => $members]);
     }
 
+    /**
+     * @throws SmartyException
+     */
     public function save($id = null)
     {
         $repository = new MemberRepository();
@@ -82,7 +92,7 @@ class AppController extends Controller
             foreach ($_POST as $key => $value) {
                 switch ($key) {
                     case 'full_name':
-                        if (preg_match(self::fullname_pattern, $value)) {
+                        if (preg_match(self::full_name_pattern, $value)) {
                             $member->setFullName($value);
                         } else {
                             $this->flash('Invalid name given.', 'danger');
@@ -141,6 +151,7 @@ class AppController extends Controller
                             header("Refresh:0");
                             exit;
                         }
+                        break;
                     case 'address':
                         $member->setAddress($value);
                         break;
@@ -202,8 +213,9 @@ class AppController extends Controller
         }
     }
 
-    private function validateAge($date, $age = 18)
+    private function validateAge($date): bool
     {
+        $age = 18;
         $birthday = date("d-m-Y", strtotime($date));
 
         // $birthday can be UNIX_TIMESTAMP or just a string-date.
@@ -220,7 +232,7 @@ class AppController extends Controller
         return true;
     }
 
-    private function hashThePass($pass)
+    private function hashThePass($pass): string
     {
         $options = [
             'cost' => 12,
