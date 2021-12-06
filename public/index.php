@@ -3,22 +3,26 @@
 require_once dirname(__DIR__) . '/vendor/autoload.php';
 
 use App\Controller\AppController;
+use App\Controller\PostController;
+use App\Controller\AuthorController;
 
 $request = $_SERVER['REQUEST_URI'];
 $app = new AppController();
+$post = new PostController();
+$author = new AuthorController();
 
 if ($_GET) {
     switch ($request) {
-        case '/edit_member?id=' . $_GET['id']:
+        case '/author/edit?id=' . $_GET['id']:
             if (preg_match('/^\d+$/', $_GET['id'])) {
-                $app->save($_GET['id']);
+                $author->save($_GET['id']);
             } else {
                 echo 'invalid ID';
             }
             break;
-        case '/delete_member?id=' . $_GET['id']:
+        case '/author/delete?id=' . $_GET['id']:
             if (preg_match('/^\d+$/', $_GET['id'])) {
-                $app->deleteMember($_GET['id']);
+                $author->deleteAuthor($_GET['id']);
             } else {
                 echo 'invalid ID';
             }
@@ -31,17 +35,18 @@ if ($_GET) {
 } else {
 
     switch ($request) {
+        case '/home':
         case '/':
             $app->index();
             break;
-        case '/home':
-            $app->index();
+        case '/authors':
+            $author->list();
             break;
-        case '/list':
-            $app->list();
+        case '/author/new':
+            $author->save();
             break;
-        case '/add':
-            $app->save();
+        case '/posts':
+            $post->list();
             break;
         default:
             http_response_code(404);

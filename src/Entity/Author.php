@@ -2,8 +2,8 @@
 
 namespace App\Entity;
 
-
-class Member
+use DateTimeImmutable;
+class Author
 {
     private ?int $id = null;
     private string $full_name;
@@ -141,8 +141,16 @@ class Member
     {
         $this->zip = $zip;
     }
-    public function getCreatedAt()
+    public function getCreatedAt(): string
     {
         return $this->created_at;
+    }
+
+    /**
+     * @param DateTimeImmutable $created_at
+     */
+    public function setCreatedAt(DateTimeImmutable $created_at): void
+    {
+        $this->created_at = $created_at;
     }
 }

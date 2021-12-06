@@ -10,7 +10,10 @@ class Controller extends SmartyBC
 
     function __construct()
     {
-        session_start();
+        if(!isset($_SESSION))
+        {
+            session_start();
+        }
         // Class Constructor.
         // These automatically get set with each new instance.
 

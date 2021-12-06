@@ -3,10 +3,10 @@ namespace App\Entity;
 
 class Media {
 
-    private $id,
-            $name,
-            $type,
-            $member;
+    private ?int $id;
+    private string $name;
+    private string $type;
+    private int $author;
 
     public function __construct()
     {
@@ -38,14 +38,14 @@ class Media {
         $this->type = $type;
     }
 
-    public function getMember()
+    public function getAuthor()
     {
-        return $this->member;
+        return $this->author;
     }
 
-    public function setMember($member)
+    public function setAuthor($author)
     {
-        $this->member = $member;
+        $this->author = $author;
     }
 
 }

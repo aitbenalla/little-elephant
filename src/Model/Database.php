@@ -4,7 +4,6 @@ namespace App\Model;
 
 use PDO;
 use PDOException;
-
 class Database
 {
   public string $servername;
@@ -13,7 +12,6 @@ class Database
 
   public function __construct()
   {
-
     $env_file = getcwd() . "/../env.json";
 
     if (file_exists($env_file) && is_readable($env_file)) {
@@ -23,14 +21,15 @@ class Database
       $this->servername = $env['servername'];
       $this->username = $env['username'];
       $this->password = $env['password'];
+
+      return true;
     } else {
       return false;
     }
   }
 
-  public function getConnection()
+  public function getConnection(): PDO|string
   {
-
     try {
       $connection = new PDO("mysql:host=$this->servername;dbname=little_elephant", $this->username, $this->password);
       $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -41,7 +40,7 @@ class Database
     }
   }
 
-  public function getServer()
+  public function getServer(): PDO|string
   {
     try {
       $connection = new PDO("mysql:host=$this->servername", $this->username, $this->password);
@@ -54,12 +53,7 @@ class Database
     }
   }
 
-  public function disconnect(): void
-  {
-    $this->connection = null;
-  }
-
-  public function createDatabase()
+  public function createDatabase(): bool|string
   {
     try {
       $conn = $this->getServer();
@@ -70,24 +64,22 @@ class Database
       return $th->getMessage();
     }
 
-    $this->disconnect();
   }
 
-  public function dropDatabase()
-  {
-    try {
-      $conn = $this->getServer();
-      $sql = "DROP DATABASE `little_elephant`";
-      $conn->exec($sql);
-      return true;
-    } catch (PDOException $th) {
-      return $th->getMessage();
-    }
+//  public function dropDatabase(): bool|string
+//  {
+//    try {
+//      $conn = $this->getServer();
+//      $sql = "DROP DATABASE `little_elephant`";
+//      $conn->exec($sql);
+//      return true;
+//    } catch (PDOException $th) {
+//      return $th->getMessage();
+//    }
+//
+//  }
 
-    $this->disconnect();
-  }
-
-  public function createTableAuthor()
+  public function createTableAuthor(): bool|string
   {
     try {
 
@@ -114,10 +106,10 @@ class Database
       return $th->getMessage();
     }
 
-    $this->disconnect();
+
   }
 
-  public function createTablePost()
+  public function createTablePost(): bool|string
   {
     try {
 
@@ -138,10 +130,10 @@ class Database
       return $th->getMessage();
     }
 
-    $this->disconnect();
+
   }
 
-  public function createTableMedia()
+  public function createTableMedia(): bool|string
   {
     try {
 
@@ -162,6 +154,5 @@ class Database
       return $th->getMessage();
     }
 
-    $this->disconnect();
   }
 }
