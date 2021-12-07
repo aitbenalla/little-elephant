@@ -7,3 +7,7 @@ body {
 table {
     font-size: 0.9rem;
 }
+
+.card .author-img {
+    width: 200px;
+}

@@ -42,11 +42,14 @@ if ($_GET) {
         case '/authors':
             $author->list();
             break;
-        case '/author/new':
-            $author->save();
-            break;
         case '/posts':
             $post->list();
+            break;
+        case '/signup':
+            $author->save();
+            break;
+        case '/signin':
+            $author->save();
             break;
         default:
             http_response_code(404);

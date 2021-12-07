@@ -14,9 +14,6 @@
                     <a class="nav-link" href="/authors">Authors</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/author/new">New Author</a>
-                </li>
-                <li class="nav-item">
                     <a class="nav-link" href="/posts">Posts</a>
                 </li>
             </ul>
@@ -24,8 +21,8 @@
                 <input class="form-control" type="text" placeholder="Search" aria-label="Search">
             </form>
             <div class="text-end d-flex justify-content-center">
-                <button type="button" class="btn btn-outline-primary me-2">Login</button>
-                <button type="button" class="btn btn-primary me-2">Sign-up</button>
+                <a href="/signin" class="btn btn-outline-primary me-2">Login</a>
+                <a href="/signup" class="btn btn-primary me-2">Sign-up</a>
                 <div class="dropdown mt-1">
                     <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
                         <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle">

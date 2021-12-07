@@ -1,5 +1,6 @@
 {include file="components/head.tpl"}
 {include file="components/navbar.tpl"}
+<main class="flex-shrink-0">
 <div class="container mt-4">
   {if isset($smarty.session.flash)}
   {$type = $smarty.session.flash.type}
@@ -10,4 +11,5 @@
   {/if}
   {block name=content}{/block}
 </div>
+</main>
 {include file="components/footer.tpl"}
