@@ -2,7 +2,7 @@
 
 namespace App\Entity;
 
-use DateTimeImmutable;
+use DateTime;
 class Author
 {
     private ?int $id = null;
@@ -17,10 +17,11 @@ class Author
     private string $role;
     private string $address;
     private string $zip;
-    private string $created_at;
+    private DateTime $created_at;
 
     public function __construct()
     {
+        $this->created_at = new DateTime('NOW');
         $this->role = 'ROLE_MEMBER';
     }
 
@@ -141,15 +142,15 @@ class Author
     {
         $this->zip = $zip;
     }
-    public function getCreatedAt(): string
+    public function getCreatedAt(): DateTime
     {
         return $this->created_at;
     }
 
     /**
-     * @param DateTimeImmutable $created_at
+     * @param DateTime $created_at
      */
-    public function setCreatedAt(DateTimeImmutable $created_at): void
+    public function setCreatedAt(DateTime $created_at): void
     {
         $this->created_at = $created_at;
     }

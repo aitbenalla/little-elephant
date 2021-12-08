@@ -21,22 +21,25 @@
                 <input class="form-control" type="text" placeholder="Search" aria-label="Search">
             </form>
             <div class="text-end d-flex justify-content-center">
-                <a href="/signin" class="btn btn-outline-primary me-2">Login</a>
-                <a href="/signup" class="btn btn-primary me-2">Sign-up</a>
-                <div class="dropdown mt-1">
-                    <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-                        <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle">
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-lg-end" aria-labelledby="dropdownUser1">
-                        <li><a class="dropdown-item" href="#">New project...</a></li>
-                        <li><a class="dropdown-item" href="#">Settings</a></li>
-                        <li><a class="dropdown-item" href="#">Profile</a></li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-                        <li><a class="dropdown-item" href="#">Sign out</a></li>
-                    </ul>
-                </div>
+                {if isset($smarty.session.author)}
+                    <div class="dropdown mt-1">
+                        <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+                            <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle">
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-lg-end" aria-labelledby="dropdownUser1">
+                            <li><a class="dropdown-item" href="#">New project...</a></li>
+                            <li><a class="dropdown-item" href="#">Settings</a></li>
+                            <li><a class="dropdown-item" href="#">Profile</a></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li><a class="dropdown-item" href="#">Sign out</a></li>
+                        </ul>
+                    </div>
+                    {else}
+                    <a href="/signin" class="btn btn-outline-primary me-2">Login</a>
+                    <a href="/signup" class="btn btn-primary me-2">Sign-up</a>
+                {/if}
             </div>
         </div>
     </div>

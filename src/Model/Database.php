@@ -96,7 +96,7 @@ class Database
         `zip` VARCHAR(10) NOT NULL,
         `role` LONGTEXT,
         `address` LONGTEXT,
-        `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        `created_at` DATETIME
         )ENGINE=InnoDB;";
 
       $this->getConnection()->exec($sql);
@@ -117,8 +117,8 @@ class Database
         `id` INT(11) AUTO_INCREMENT PRIMARY KEY,
         `title` VARCHAR(180),
         `content` LONGTEXT,
-        `updated_at` DATE,
-        `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        `updated_at` DATETIME,
+        `created_at` DATETIME,
         author_id INT NOT NULL,
         FOREIGN KEY (author_id) REFERENCES author(id)
       )ENGINE=InnoDB;";

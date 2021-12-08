@@ -2,16 +2,21 @@
 
 namespace App\Entity;
 
-use DateTimeImmutable;
+use DateTime;
 
 class Post
 {
     private ?int $id = null;
     private string $title;
     private string $content;
-    private DateTimeImmutable $created_at;
-    private DateTimeImmutable $updated_at;
+    private DateTime $created_at;
+    private DateTime $updated_at;
     private int $author;
+
+    public function __construct()
+    {
+        $this->created_at = new DateTime('NOW');
+    }
 
     /**
      * @return int|null
@@ -62,33 +67,33 @@ class Post
     }
 
     /**
-     * @return DateTimeImmutable
+     * @return DateTime
      */
-    public function getCreatedAt(): DateTimeImmutable
+    public function getCreatedAt(): DateTime
     {
         return $this->created_at;
     }
 
     /**
-     * @param DateTimeImmutable $created_at
+     * @param DateTime $created_at
      */
-    public function setCreatedAt(DateTimeImmutable $created_at): void
+    public function setCreatedAt(DateTime $created_at): void
     {
         $this->created_at = $created_at;
     }
 
     /**
-     * @return DateTimeImmutable
+     * @return DateTime
      */
-    public function getUpdatedAt(): DateTimeImmutable
+    public function getUpdatedAt(): DateTime
     {
         return $this->updated_at;
     }
 
     /**
-     * @param DateTimeImmutable $updated_at
+     * @param DateTime $updated_at
      */
-    public function setUpdatedAt(DateTimeImmutable $updated_at): void
+    public function setUpdatedAt(DateTime $updated_at): void
     {
         $this->updated_at = $updated_at;
     }

@@ -7,7 +7,6 @@ use PDO;
 use PDOException;
 class AuthorRepository extends Database
 {
-
     public function getAll()
     {
         try {
