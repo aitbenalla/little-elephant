@@ -4,67 +4,68 @@ namespace App\Model;
 
 use PDO;
 use PDOException;
+
 class Database
 {
-  public string $servername;
-  public string $username;
-  public string $password;
+    public string $servername;
+    public string $username;
+    public string $password;
 
-  public function __construct()
-  {
-    $env_file = getcwd() . "/../env.json";
+    public function __construct()
+    {
+        $env_file = getcwd() . "/../env.json";
 
-    if (file_exists($env_file) && is_readable($env_file)) {
-      $env_content = file_get_contents($env_file);
-      $env = json_decode($env_content, true);
+        if (file_exists($env_file) && is_readable($env_file)) {
+            $env_content = file_get_contents($env_file);
+            $env = json_decode($env_content, true);
 
-      $this->servername = $env['servername'];
-      $this->username = $env['username'];
-      $this->password = $env['password'];
+            $this->servername = $env['servername'];
+            $this->username = $env['username'];
+            $this->password = $env['password'];
 
-      return true;
-    } else {
-      return false;
-    }
-  }
-
-  public function getConnection(): PDO|string
-  {
-    try {
-      $connection = new PDO("mysql:host=$this->servername;dbname=little_elephant", $this->username, $this->password);
-      $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-      return $connection;
-    } catch (PDOException $th) {
-
-      return $th->getMessage();
-    }
-  }
-
-  public function getServer(): PDO|string
-  {
-    try {
-      $connection = new PDO("mysql:host=$this->servername", $this->username, $this->password);
-      $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-      return $connection;
-    } catch (PDOException $th) {
-
-      return $th->getMessage();
-    }
-  }
-
-  public function createDatabase(): bool|string
-  {
-    try {
-      $conn = $this->getServer();
-      $sql = "CREATE DATABASE `little_elephant`";
-      $conn->exec($sql);
-      return true;
-    } catch (PDOException $th) {
-      return $th->getMessage();
+            return true;
+        } else {
+            return false;
+        }
     }
 
-  }
+    public function getConnection(): PDO|string
+    {
+        try {
+            $connection = new PDO("mysql:host=$this->servername;dbname=little_elephant", $this->username, $this->password);
+            $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            return $connection;
+        } catch (PDOException $th) {
+
+            return $th->getMessage();
+        }
+    }
+
+    public function getServer(): PDO|string
+    {
+        try {
+            $connection = new PDO("mysql:host=$this->servername", $this->username, $this->password);
+            $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+            return $connection;
+        } catch (PDOException $th) {
+
+            return $th->getMessage();
+        }
+    }
+
+    public function createDatabase(): bool|string
+    {
+        try {
+            $conn = $this->getServer();
+            $sql = "CREATE DATABASE `little_elephant`";
+            $conn->exec($sql);
+            return true;
+        } catch (PDOException $th) {
+            return $th->getMessage();
+        }
+
+    }
 
 //  public function dropDatabase(): bool|string
 //  {
@@ -79,11 +80,11 @@ class Database
 //
 //  }
 
-  public function createTableAuthor(): bool|string
-  {
-    try {
+    public function createTableAuthor(): bool|string
+    {
+        try {
 
-      $sql = "CREATE TABLE `author` (
+            $sql = "CREATE TABLE `author` (
         `id` INT(11) AUTO_INCREMENT PRIMARY KEY,
         `full_name` VARCHAR(60),
         `birth_date` DATE NOT NULL,
@@ -93,27 +94,26 @@ class Database
         `password` VARCHAR(61) NOT NULL,
         `city` VARCHAR(20) NOT NULL,
         `country` VARCHAR(20) NOT NULL,
-        `zip` VARCHAR(10) NOT NULL,
-        `role` LONGTEXT,
         `address` LONGTEXT,
-        `created_at` DATETIME
+        `created_at` DATETIME,
+        `updated_at` DATETIME
         )ENGINE=InnoDB;";
 
-      $this->getConnection()->exec($sql);
+            $this->getConnection()->exec($sql);
 
-      return true;
-    } catch (PDOException $th) {
-      return $th->getMessage();
+            return true;
+        } catch (PDOException $th) {
+            return $th->getMessage();
+        }
+
+
     }
 
+    public function createTablePost(): bool|string
+    {
+        try {
 
-  }
-
-  public function createTablePost(): bool|string
-  {
-    try {
-
-      $sql = "CREATE TABLE `post` (
+            $sql = "CREATE TABLE `post` (
         `id` INT(11) AUTO_INCREMENT PRIMARY KEY,
         `title` VARCHAR(180),
         `content` LONGTEXT,
@@ -123,21 +123,21 @@ class Database
         FOREIGN KEY (author_id) REFERENCES author(id)
       )ENGINE=InnoDB;";
 
-      $this->getConnection()->exec($sql);
+            $this->getConnection()->exec($sql);
 
-      return true;
-    } catch (PDOException $th) {
-      return $th->getMessage();
+            return true;
+        } catch (PDOException $th) {
+            return $th->getMessage();
+        }
+
+
     }
 
+    public function createTableMedia(): bool|string
+    {
+        try {
 
-  }
-
-  public function createTableMedia(): bool|string
-  {
-    try {
-
-      $sql = "CREATE TABLE `media` (
+            $sql = "CREATE TABLE `media` (
         `id` INT(11) AUTO_INCREMENT PRIMARY KEY,
         `type` VARCHAR(25) NOT NULL,
         `name` LONGBLOB NOT NULL,
@@ -147,12 +147,34 @@ class Database
         ON UPDATE RESTRICT
       )ENGINE=InnoDB;";
 
-      $this->getConnection()->exec($sql);
+            $this->getConnection()->exec($sql);
 
-      return true;
-    } catch (PDOException $th) {
-      return $th->getMessage();
+            return true;
+        } catch (PDOException $th) {
+            return $th->getMessage();
+        }
+
     }
 
-  }
+    public function createTableAdmin(): bool|string
+    {
+        try {
+            $sql = "CREATE TABLE `admin` (
+        `id` INT(11) AUTO_INCREMENT PRIMARY KEY,
+        `full_name` VARCHAR(60),
+        `email` VARCHAR(180) NOT NULL,
+        `password` VARCHAR(61) NOT NULL,
+        `role` LONGTEXT NOT NULL,
+        `created_at` DATETIME
+        )ENGINE=InnoDB;";
+
+            $this->getConnection()->exec($sql);
+
+            return true;
+        } catch (PDOException $th) {
+            return $th->getMessage();
+        }
+
+
+    }
 }

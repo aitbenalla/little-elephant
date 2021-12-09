@@ -9,12 +9,6 @@ use App\Model\MediaRepository;
 use SmartyException;
 class AuthorController extends Controller
 {
-    const email_pattern = "/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,})$/i";
-    const username_pattern = "/^[a-zA-Z0-9]{5,}$/";
-    const pass_pattern = "/^.{8,}$/";
-    const phone_pattern = "/^[0-9]{10}+$/";
-    const full_name_pattern = "/^([a-zA-Z' ]+)$/";
-
     /**
      * @throws SmartyException
      */

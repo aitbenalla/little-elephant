@@ -29,8 +29,9 @@ class AppController extends Controller
                     $author = $this->getDB()->createTableAuthor();
                     $media = $this->getDB()->createTableMedia();
                     $post = $this->getDB()->createTablePost();
+                    $admin = $this->getDB()->createTableAdmin();
 
-                    if ($author === true && $media === true && $post === true) {
+                    if ($author === true && $media === true && $post === true && $admin === true) {
                         $this->flash('Tables created successfully', 'success');
                     } else {
                         $this->flash('Tables cannot be created or all ready created', 'danger');

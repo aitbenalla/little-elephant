@@ -14,7 +14,6 @@ class Author
     private string $password;
     private string $city;
     private string $country;
-    private string $role;
     private string $address;
     private string $zip;
     private DateTime $created_at;
@@ -22,7 +21,6 @@ class Author
     public function __construct()
     {
         $this->created_at = new DateTime('NOW');
-        $this->role = 'ROLE_MEMBER';
     }
 
     public function getId()
@@ -108,24 +106,15 @@ class Author
     {
         $this->country = $country;
     }
-    public function getRole()
-    {
-        return $this->role;
-    }
-
-    public function setRole($role)
-    {
-        $this->role = $role;
-    }
     public function getAddress()
     {
         return $this->address;
     }
-
     public function setAddress($address)
     {
         $this->address = $address;
     }
+
     public function getImage()
     {
         return $this->image;

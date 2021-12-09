@@ -6,18 +6,20 @@ use App\Controller\AppController;
 use App\Controller\PostController;
 use App\Controller\AuthorController;
 use App\Controller\SecurityController;
+use App\Controller\AdminController;
 
 $request = $_SERVER['REQUEST_URI'];
 $app = new AppController();
 $post = new PostController();
 $author = new AuthorController();
+$admin = new AdminController();
 $security = new SecurityController();
 
 if (str_ends_with($request, '/')) {
     $request = substr($request, 0, -1);
 }
 
-if (preg_match('/\/admin/', $request) && !preg_match('/\/admin\/login/',$request))
+if (preg_match('/\/admin/', $request) && !preg_match('/\/admin\/login/',$request) && !preg_match('/\/admin\/new/',$request))
 {
     if (isset($_SESSION['admin']))
     {
@@ -37,35 +39,11 @@ if (preg_match('/\/admin/', $request) && !preg_match('/\/admin\/login/',$request
     else {
         header('Refresh:0; url=/admin/login');
     }
-
-}
-
-if ($_GET) {
-    switch ($request) {
-        case '/author/edit?id=' . $_GET['id']:
-            if (preg_match('/^\d+$/', $_GET['id'])) {
-                $author->save($_GET['id']);
-            } else {
-                echo 'invalid ID';
-            }
-            break;
-        case '/author/delete?id=' . $_GET['id']:
-            if (preg_match('/^\d+$/', $_GET['id'])) {
-                $author->deleteAuthor($_GET['id']);
-            } else {
-                echo 'invalid ID';
-            }
-            break;
-        default:
-            http_response_code(404);
-            $app->error();
-            break;
-    }
 }
 else {
     switch ($request) {
         case '/home':
-        case '/':
+        case '':
             $app->index();
             break;
         case '/authors':
@@ -83,9 +61,37 @@ else {
         case '/admin/login':
             $security->login();
             break;
+        case '/admin/new':
+            $security->save();
+            break;
         default:
             http_response_code(404);
             $app->error();
             break;
     }
 }
+
+//if ($_GET) {
+//    switch ($request) {
+//        case '/author/edit?id=' . $_GET['id']:
+//            if (preg_match('/^\d+$/', $_GET['id'])) {
+//                $author->save($_GET['id']);
+//            } else {
+//                echo 'invalid ID';
+//            }
+//            break;
+//        case '/author/delete?id=' . $_GET['id']:
+//            if (preg_match('/^\d+$/', $_GET['id'])) {
+//                $author->deleteAuthor($_GET['id']);
+//            } else {
+//                echo 'invalid ID';
+//            }
+//            break;
+//        default:
+//            http_response_code(404);
+//            $app->error();
+//            break;
+//    }
+//}
+
+
