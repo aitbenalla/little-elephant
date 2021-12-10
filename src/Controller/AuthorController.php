@@ -2,10 +2,10 @@
 
 namespace App\Controller;
 
-use App\Entity\Media;
+use App\Entity\MediaAuthor;
 use App\Entity\Author;
 use App\Model\AuthorRepository;
-use App\Model\MediaRepository;
+use App\Model\MediaAuthorRepository;
 use SmartyException;
 class AuthorController extends Controller
 {
@@ -124,8 +124,8 @@ class AuthorController extends Controller
             $result = $repository->flush($author);
 
             if ($result && !empty($_FILES["photo"]["name"])) {
-                $media = new Media();
-                $mediaRepository = new MediaRepository();
+                $media = new MediaAuthor();
+                $mediaRepository = new MediaAuthorRepository();
                 $imgData = file_get_contents($_FILES['photo']['tmp_name']);
                 $imgName = basename($_FILES["photo"]["name"]);
                 $imgType = pathinfo($imgName, PATHINFO_EXTENSION);
@@ -158,32 +158,5 @@ class AuthorController extends Controller
 
             header("Refresh:0; url=/authors");
         }
-    }
-
-    private function validateAge($date): bool
-    {
-        $age = 18;
-        $birthday = date("d-m-Y", strtotime($date));
-
-        // $birthday can be UNIX_TIMESTAMP or just a string-date.
-        if (is_string($birthday)) {
-            $birthday = strtotime($birthday);
-        }
-
-        // check
-        // 31536000 is the number of seconds in a 365 days year.
-        if (time() - $birthday < $age * 31536000) {
-            return false;
-        }
-
-        return true;
-    }
-
-    private function hashThePass($pass): string
-    {
-        $options = [
-            'cost' => 12,
-        ];
-        return password_hash($pass, PASSWORD_BCRYPT, $options);
     }
 }

@@ -1,7 +1,7 @@
 <?php
 namespace App\Entity;
 
-class Media {
+class MediaAuthor {
 
     private ?int $id;
     private string $name;
@@ -13,12 +13,12 @@ class Media {
         
     }
     
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
@@ -28,7 +28,7 @@ class Media {
         $this->name = $name;
     }
 
-    public function getType()
+    public function getType(): string
     {
         return $this->type;
     }
@@ -38,7 +38,7 @@ class Media {
         $this->type = $type;
     }
 
-    public function getAuthor()
+    public function getAuthor(): int
     {
         return $this->author;
     }

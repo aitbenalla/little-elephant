@@ -90,12 +90,12 @@ class Database
         `birth_date` DATE NOT NULL,
         `username` VARCHAR(50) NOT NULL,
         `phone` INT(50) NOT NULL,
-        `email` VARCHAR(180) NOT NULL,
+        `email` VARCHAR(180) NOT NULL UNIQUE,
         `password` VARCHAR(61) NOT NULL,
         `city` VARCHAR(20) NOT NULL,
         `country` VARCHAR(20) NOT NULL,
         `address` LONGTEXT,
-        `created_at` DATETIME,
+        `created_at` DATETIME NOT NULL,
         `updated_at` DATETIME
         )ENGINE=InnoDB;";
 
@@ -118,7 +118,7 @@ class Database
         `title` VARCHAR(180),
         `content` LONGTEXT,
         `updated_at` DATETIME,
-        `created_at` DATETIME,
+        `created_at` DATETIME NOT NULL,
         author_id INT NOT NULL,
         FOREIGN KEY (author_id) REFERENCES author(id)
       )ENGINE=InnoDB;";
@@ -133,16 +133,39 @@ class Database
 
     }
 
-    public function createTableMedia(): bool|string
+    public function createTableMediaAuthor(): bool|string
     {
         try {
 
-            $sql = "CREATE TABLE `media` (
+            $sql = "CREATE TABLE `media_author` (
         `id` INT(11) AUTO_INCREMENT PRIMARY KEY,
         `type` VARCHAR(25) NOT NULL,
         `name` LONGBLOB NOT NULL,
         author_id INT NOT NULL,
         FOREIGN KEY (author_id) REFERENCES author(id)
+        ON DELETE CASCADE
+        ON UPDATE RESTRICT
+      )ENGINE=InnoDB;";
+
+            $this->getConnection()->exec($sql);
+
+            return true;
+        } catch (PDOException $th) {
+            return $th->getMessage();
+        }
+
+    }
+
+    public function createTableMediaPost(): bool|string
+    {
+        try {
+
+            $sql = "CREATE TABLE `media_post` (
+        `id` INT(11) AUTO_INCREMENT PRIMARY KEY,
+        `type` VARCHAR(25) NOT NULL,
+        `name` LONGBLOB NOT NULL,
+        post_id INT NOT NULL,
+        FOREIGN KEY (post_id) REFERENCES post(id)
         ON DELETE CASCADE
         ON UPDATE RESTRICT
       )ENGINE=InnoDB;";
@@ -162,10 +185,10 @@ class Database
             $sql = "CREATE TABLE `admin` (
         `id` INT(11) AUTO_INCREMENT PRIMARY KEY,
         `full_name` VARCHAR(60),
-        `email` VARCHAR(180) NOT NULL,
+        `email` VARCHAR(180) NOT NULL UNIQUE,
         `password` VARCHAR(61) NOT NULL,
         `role` LONGTEXT NOT NULL,
-        `created_at` DATETIME
+        `created_at` DATETIME NOT NULL
         )ENGINE=InnoDB;";
 
             $this->getConnection()->exec($sql);

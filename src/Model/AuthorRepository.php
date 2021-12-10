@@ -10,9 +10,9 @@ class AuthorRepository extends Database
     public function getAll()
     {
         try {
-            $sql = 'SELECT author.*, media.name, media.type
+            $sql = 'SELECT author.*, media_author.name, media_author.type
                     FROM author
-                    LEFT JOIN media ON author.id = media.author_id';
+                    LEFT JOIN media_author ON author.id = media_author.author_id';
             return $this->getConnection()->query($sql)->fetchAll(PDO::FETCH_CLASS, Author::class);
         }
         catch (PDOException $th)
@@ -43,7 +43,7 @@ class AuthorRepository extends Database
     public function flush(Author $author): bool|int|string|null
     {
         try {
-            $sql = 'INSERT INTO author(full_name,birth_date,username,phone,email,password,address,city,country,zip,role) 
+            $sql = 'INSERT INTO author(full_name,birth_date,username,phone,email,password,address,city,country) 
                     VALUES(
                         :full_name,
                         :birth_date,
@@ -53,9 +53,7 @@ class AuthorRepository extends Database
                         :password,
                         :address,
                         :city,
-                        :country,
-                        :zip,
-                        :role
+                        :country
                         )';
 
             if ($author->getId()) {
@@ -68,9 +66,7 @@ class AuthorRepository extends Database
                         password = :password,
                         address = :address,
                         city = :city,
-                        country = :country,
-                        zip = :zip,
-                        role = :role
+                        country = :country
                         WHERE id = :id
                         ';
             }
@@ -90,8 +86,6 @@ class AuthorRepository extends Database
             $stmt->bindValue(":address", $author->getAddress());
             $stmt->bindValue(":city", $author->getCity());
             $stmt->bindValue(":country", $author->getCountry());
-            $stmt->bindValue(":zip", $author->getZip());
-            $stmt->bindValue(":role", $author->getRole());
 
             $stmt->execute();
 

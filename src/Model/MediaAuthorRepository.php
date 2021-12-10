@@ -2,10 +2,10 @@
 
 namespace App\Model;
 
-use App\Entity\Media;
+use App\Entity\MediaAuthor;
 //use PDO;
 use PDOException;
-class MediaRepository extends Database
+class MediaAuthorRepository extends Database
 {
 
 //    public function getAll(): bool|array|string
@@ -20,12 +20,12 @@ class MediaRepository extends Database
 //        }
 //    }
 
-    public function flush(Media $media, $id = null): bool|string
+    public function flush(MediaAuthor $media, $id = null): bool|string
     {
         try {
             $conn = $this->getConnection();
 
-            $sql = 'INSERT INTO media(name,type,author_id) 
+            $sql = 'INSERT INTO media_author(name,type,author_id) 
                 VALUES(
                     :name,
                     :type,
@@ -33,7 +33,7 @@ class MediaRepository extends Database
                     )';
 
             if ($id) {
-                $sql = 'UPDATE media SET name=:name, type=:type WHERE author_id = :author_id';
+                $sql = 'UPDATE media_author SET name=:name, type=:type WHERE author_id = :author_id';
             }
 
             $stmt = $conn->prepare($sql);

@@ -27,11 +27,17 @@ class AppController extends Controller
                 }
                 if ($_POST['db_execute'] === '3' && is_object($this->getDB()->getConnection())) {
                     $author = $this->getDB()->createTableAuthor();
-                    $media = $this->getDB()->createTableMedia();
+                    $mediaAuthor = $this->getDB()->createTableMediaAuthor();
                     $post = $this->getDB()->createTablePost();
+                    $mediaPost = $this->getDB()->createTableMediaPost();
                     $admin = $this->getDB()->createTableAdmin();
 
-                    if ($author === true && $media === true && $post === true && $admin === true) {
+                    if ($author === true
+                        && $mediaAuthor === true
+                        && $post === true
+                        && $mediaPost === true
+                        && $admin === true
+                    ) {
                         $this->flash('Tables created successfully', 'success');
                     } else {
                         $this->flash('Tables cannot be created or all ready created', 'danger');

@@ -3,9 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Admin;
-use App\Entity\Media;
 use App\Model\AdminRepository;
-use App\Model\MediaRepository;
 use SmartyException;
 
 class AdminController extends Controller
@@ -20,9 +18,7 @@ class AdminController extends Controller
         if (!$id) {
             $admin = new Admin();
         } else {
-
             $admin = $repository->getOneById($id);
-
             if ($admin) {
                 $this->assign('author', $admin);
             }
@@ -74,19 +70,6 @@ class AdminController extends Controller
 
             $result = $repository->flush($admin);
 
-            if ($result && !empty($_FILES["photo"]["name"])) {
-                $media = new Media();
-                $mediaRepository = new MediaRepository();
-                $imgData = file_get_contents($_FILES['photo']['tmp_name']);
-                $imgName = basename($_FILES["photo"]["name"]);
-                $imgType = pathinfo($imgName, PATHINFO_EXTENSION);
-
-                $media->setName($imgData);
-                $media->setType($imgType);
-                $media->setAuthor($result);
-
-                $mediaRepository->flush($media, $id);
-            }
 
             if ($result) {
 
@@ -94,6 +77,6 @@ class AdminController extends Controller
             }
         }
 
-        $this->display('admin/form.tpl');
+        $this->display('admin/manager/form.tpl');
     }
 }

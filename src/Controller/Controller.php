@@ -53,4 +53,31 @@ class Controller extends SmartyBC
         // add the message to the session
         $_SESSION['flash'] = ['message' => $message, 'type' => $type];
     }
+
+    public function validateAge($date): bool
+    {
+        $age = 18;
+        $birthday = date("d-m-Y", strtotime($date));
+
+        // $birthday can be UNIX_TIMESTAMP or just a string-date.
+        if (is_string($birthday)) {
+            $birthday = strtotime($birthday);
+        }
+
+        // check
+        // 31536000 is the number of seconds in a 365 days year.
+        if (time() - $birthday < $age * 31536000) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public function hashThePass($pass): string
+    {
+        $options = [
+            'cost' => 12,
+        ];
+        return password_hash($pass, PASSWORD_BCRYPT, $options);
+    }
 }

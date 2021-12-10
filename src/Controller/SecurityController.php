@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Admin;
 use App\Model\AdminRepository;
 use SmartyException;
 
@@ -10,19 +11,25 @@ class SecurityController extends Controller
     /**
      * @throws SmartyException
      */
-    public function login()
+    public function loginAdmin()
     {
-        if (isset($_POST['login']))
-        {
+
+        if (isset($_POST['login'])) {
             $repository = new AdminRepository();
             $email = htmlentities($_POST['email']);
             $password = htmlentities($_POST['password']);
 
-            $auth =$repository->getAuth($email, $password);
+            $admin = $repository->getAuth($email);
 
-            var_dump($auth);
+            if (password_verify($password, $admin->getPassword())) {
+                echo 'correct';
 
+            } else {
+
+                echo 'not correct';
+            }
         }
+
         $this->display('security/login.tpl');
     }
 }

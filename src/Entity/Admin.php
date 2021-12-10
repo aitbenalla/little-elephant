@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use DateTime;
+use DateTimeZone;
 class Admin
 {
     private ?int $id = null;
@@ -10,12 +11,14 @@ class Admin
     private string $email;
     private string $password;
     private string $role;
-    private DateTime $created_at;
+    private DateTime | string $created_at;
 
     public function __construct()
     {
-        $this->created_at = new DateTime('NOW');
-        $this->role = 'ROLE_MEMBER';
+        $datetime = new DateTime('NOW');
+        $datetime->setTimezone(new DateTimeZone('Africa/Casablanca'));
+        $this->created_at = $datetime;
+        $this->role = 'ROLE_ADMIN';
     }
 
     /**
@@ -98,10 +101,7 @@ class Admin
         $this->role = $role;
     }
 
-    /**
-     * @return DateTime
-     */
-    public function getCreatedAt(): DateTime
+    public function getCreatedAt(): ?DateTime
     {
         return $this->created_at;
     }

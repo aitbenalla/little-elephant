@@ -59,10 +59,10 @@ else {
             $author->save();
             break;
         case '/admin/login':
-            $security->login();
+            $security->loginAdmin();
             break;
         case '/admin/new':
-            $security->save();
+            $admin->save();
             break;
         default:
             http_response_code(404);
