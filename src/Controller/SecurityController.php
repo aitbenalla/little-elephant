@@ -13,23 +13,28 @@ class SecurityController extends Controller
      */
     public function loginAdmin()
     {
+        if (!isset($_SESSION['admin']))
+        {
+            if (isset($_POST['login'])) {
+                $repository = new AdminRepository();
+                $email = htmlentities($_POST['email']);
+                $password = htmlentities($_POST['password']);
 
-        if (isset($_POST['login'])) {
-            $repository = new AdminRepository();
-            $email = htmlentities($_POST['email']);
-            $password = htmlentities($_POST['password']);
+                $admin = $repository->getAuth($email);
 
-            $admin = $repository->getAuth($email);
-
-            if (password_verify($password, $admin->getPassword())) {
-                echo 'correct';
-
-            } else {
-
-                echo 'not correct';
+                if (password_verify($password, $admin->getPassword())) {
+                    $_SESSION['admin'] = $admin;
+                    header("Refresh:0; url=/admin");
+                } else {
+                    $this->flash('Authentication failed', 'danger');
+                }
             }
+
+            $this->display('security/login.tpl');
+        }
+        else {
+            header("Refresh:0; url=/admin");
         }
 
-        $this->display('security/login.tpl');
     }
 }

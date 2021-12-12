@@ -25,7 +25,7 @@ if (preg_match('/\/admin/', $request) && !preg_match('/\/admin\/login/',$request
     {
         switch ($request) {
             case '/admin':
-                echo 'Hello Admin';
+                $admin->dashboard();
                 break;
             case '/admin/author':
                 $author->list();

@@ -11,6 +11,14 @@ class AdminController extends Controller
     /**
      * @throws SmartyException
      */
+    public function dashboard()
+    {
+        $this->display('admin/dashboard.tpl');
+    }
+
+    /**
+     * @throws SmartyException
+     */
     public function save($id = null)
     {
         $repository = new AdminRepository();
@@ -79,4 +87,5 @@ class AdminController extends Controller
 
         $this->display('admin/manager/form.tpl');
     }
+
 }
