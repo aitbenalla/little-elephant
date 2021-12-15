@@ -3,7 +3,7 @@
 
 {block name="content"}
     <div class="text-center py-5 mb-5">
-        <form class="form-signin" action="/admin/login" method="post">
+        <form class="form-signin" action="{$action}" method="post">
         <img class="mb-4" src="/assets/media/logo.png" alt="" width="80">
         <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
 

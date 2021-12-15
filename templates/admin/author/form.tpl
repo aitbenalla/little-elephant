@@ -5,7 +5,7 @@
   {if isset($author)}
     <h1 class="fw-bold h2">Edit Author:</h1>
     {else}
-    <h1 class="fw-bold h2">Add Author:</h1>
+    <h1 class="fw-bold h2">Sign Up:</h1>
   {/if}
     <div class="row p-3">
       <div class="col-lg-12">

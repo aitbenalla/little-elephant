@@ -18,7 +18,7 @@ class AuthorController extends Controller
 
         $authors = $repository->getAll();
 
-        $this->display('author/list.tpl', ['authors' => $authors]);
+        $this->display('admin/author/list.tpl', ['authors' => $authors]);
     }
 
     /**

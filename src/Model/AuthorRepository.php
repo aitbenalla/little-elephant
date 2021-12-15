@@ -118,4 +118,22 @@ class AuthorRepository extends Database
             return $th->getMessage();
         }
     }
+
+    public function getAuth($email)
+    {
+        try {
+            $conn = $this->getConnection();
+
+            $stmt = $conn->prepare('SELECT * FROM author WHERE email = ?');
+            $stmt->execute([$email]);
+
+            $stmt->setFetchMode(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, Author::class);
+
+            return $stmt->fetch();
+        }
+        catch (PDOException $th)
+        {
+            return $th->getMessage();
+        }
+    }
 }

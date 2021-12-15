@@ -25,9 +25,10 @@ if (preg_match('/\/admin/', $request) && !preg_match('/\/admin\/login/',$request
     {
         switch ($request) {
             case '/admin':
+            case '/admin/dashboard':
                 $admin->dashboard();
                 break;
-            case '/admin/author':
+            case '/admin/authors':
                 $author->list();
                 break;
             default:
@@ -47,16 +48,16 @@ else {
             $app->index();
             break;
         case '/authors':
-            $author->list();
+            $app->authors();
             break;
         case '/posts':
-            $post->list();
+            $app->posts();
             break;
-        case '/signup':
-            $author->save();
+        case '/register':
+            $app->register();
             break;
-        case '/signin':
-            $author->save();
+        case '/login':
+            $security->loginAuthor();
             break;
         case '/admin/login':
             $security->loginAdmin();

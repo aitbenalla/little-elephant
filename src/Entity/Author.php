@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use DateTime;
+use DateTimeZone;
 class Author
 {
     private ?int $id = null;
@@ -16,11 +17,13 @@ class Author
     private string $country;
     private string $address;
     private string $zip;
-    private DateTime $created_at;
+    private DateTime | string $created_at;
 
     public function __construct()
     {
-        $this->created_at = new DateTime('NOW');
+        $datetime = new DateTime('NOW');
+        $datetime->setTimezone(new DateTimeZone('Africa/Casablanca'));
+        $this->created_at = $datetime;
     }
 
     public function getId()
@@ -131,7 +134,7 @@ class Author
     {
         $this->zip = $zip;
     }
-    public function getCreatedAt(): DateTime
+    public function getCreatedAt(): ?DateTime
     {
         return $this->created_at;
     }

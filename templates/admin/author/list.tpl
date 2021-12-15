@@ -1,4 +1,4 @@
-{extends file="base.tpl"}
+{extends file="admin/base.tpl"}
 {$title = 'List'}
 {block name=stylesheets}
 <link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
