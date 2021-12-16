@@ -18,6 +18,7 @@ class Author
     private string $address;
     private string $zip;
     private DateTime | string $created_at;
+    private DateTime | string | null $updated_at;
 
     public function __construct()
     {
@@ -134,16 +135,37 @@ class Author
     {
         $this->zip = $zip;
     }
-    public function getCreatedAt(): ?DateTime
+
+    /**
+     * @return DateTime|string
+     */
+    public function getCreatedAt(): DateTime|string
     {
         return $this->created_at;
     }
 
     /**
-     * @param DateTime $created_at
+     * @param DateTime|string $created_at
      */
-    public function setCreatedAt(DateTime $created_at): void
+    public function setCreatedAt(DateTime|string $created_at): void
     {
         $this->created_at = $created_at;
     }
+
+    /**
+     * @return DateTime|string|null
+     */
+    public function getUpdatedAt(): DateTime|string|null
+    {
+        return $this->updated_at;
+    }
+
+    /**
+     * @param DateTime|string|null $updated_at
+     */
+    public function setUpdatedAt(DateTime|string|null $updated_at): void
+    {
+        $this->updated_at = $updated_at;
+    }
+
 }

@@ -7,7 +7,7 @@
 
     <div class="row p-3">
         <div class="col-lg-12">
-            <form class="row g-3" method="POST" action="" enctype="multipart/form-data">
+            <form class="row g-3" method="POST" action="/register" enctype="multipart/form-data">
                 <div class="col-md-6">
                     <label for="inputPhoto" class="form-label">Photo</label>
                     <input type="file" name="photo" class="form-control" id="inputPhoto">

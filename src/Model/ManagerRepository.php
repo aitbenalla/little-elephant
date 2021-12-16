@@ -2,12 +2,12 @@
 
 namespace App\Model;
 
-use App\Entity\Admin;
+use App\Entity\Manager;
 use PDO;
 use PDOException;
-class AdminRepository extends Database
+class ManagerRepository extends Database
 {
-    public function flush(Admin $admin): bool|int|string|null
+    public function flush(Manager $admin): bool|int|string|null
     {
         try {
             $sql = 'INSERT INTO admin(full_name,email,password,role,created_at) 
@@ -68,7 +68,7 @@ class AdminRepository extends Database
 //            $stmt->bindParam(':email', $email);
             $stmt->execute([$email]);
 
-            $stmt->setFetchMode(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, Admin::class);
+            $stmt->setFetchMode(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, Manager::class);
 
             return $stmt->fetch();
         }

@@ -89,11 +89,11 @@ class Database
         `full_name` VARCHAR(60),
         `birth_date` DATE NOT NULL,
         `username` VARCHAR(50) NOT NULL,
-        `phone` INT(50) NOT NULL,
+        `phone` INT(50),
         `email` VARCHAR(180) NOT NULL UNIQUE,
         `password` VARCHAR(61) NOT NULL,
-        `city` VARCHAR(20) NOT NULL,
-        `country` VARCHAR(20) NOT NULL,
+        `city` VARCHAR(20),
+        `country` VARCHAR(20),
         `address` LONGTEXT,
         `created_at` DATETIME NOT NULL,
         `updated_at` DATETIME
@@ -115,8 +115,8 @@ class Database
 
             $sql = "CREATE TABLE `post` (
         `id` INT(11) AUTO_INCREMENT PRIMARY KEY,
-        `title` VARCHAR(180),
-        `content` LONGTEXT,
+        `title` VARCHAR(180) NOT NULL,
+        `content` LONGTEXT NOT NULL,
         `updated_at` DATETIME,
         `created_at` DATETIME NOT NULL,
         author_id INT NOT NULL,
@@ -179,10 +179,10 @@ class Database
 
     }
 
-    public function createTableAdmin(): bool|string
+    public function createTableManager(): bool|string
     {
         try {
-            $sql = "CREATE TABLE `admin` (
+            $sql = "CREATE TABLE `manager` (
         `id` INT(11) AUTO_INCREMENT PRIMARY KEY,
         `full_name` VARCHAR(60),
         `email` VARCHAR(180) NOT NULL UNIQUE,

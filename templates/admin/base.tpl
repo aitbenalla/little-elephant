@@ -37,21 +37,27 @@
             <div class="position-sticky pt-3">
                 <ul class="nav flex-column">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="/admin/dashboard">
-                            <span data-feather="home"></span>
+                        <a class="nav-link" href="/admin/dashboard">
+                            <i class="fas fa-tachometer-alt me-1"></i>
                             Dashboard
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="/admin/authors">
-                            <span data-feather="file"></span>
+                            <i class="fas fa-users me-1"></i>
                             Authors
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="/admin/posts">
-                            <span data-feather="shopping-cart"></span>
+                            <i class="fas fa-book me-1"></i>
                             Posts
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/admin/managers">
+                            <i class="fas fa-user-secret me-1"></i>
+                            Managers
                         </a>
                     </li>
                 </ul>

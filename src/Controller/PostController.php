@@ -9,6 +9,14 @@ class PostController extends Controller
      */
     public function list()
     {
-        $this->display('post/list.tpl');
+        $this->display('admin/post/list.tpl');
+    }
+
+    /**
+     * @throws \SmartyException
+     */
+    public function save($id = null)
+    {
+        $this->display('admin/post/form.tpl');
     }
 }

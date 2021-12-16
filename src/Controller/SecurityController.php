@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Model\AdminRepository;
+use App\Model\ManagerRepository;
 use App\Model\AuthorRepository;
 use SmartyException;
 class SecurityController extends Controller
@@ -12,17 +12,17 @@ class SecurityController extends Controller
      */
     public function loginAdmin()
     {
-        if (!isset($_SESSION['admin']))
+        if (!isset($_SESSION['manager']))
         {
             if (isset($_POST['login'])) {
-                $repository = new AdminRepository();
+                $repository = new ManagerRepository();
                 $email = htmlentities($_POST['email']);
                 $password = htmlentities($_POST['password']);
 
-                $admin = $repository->getAuth($email);
+                $manager = $repository->getAuth($email);
 
-                if (password_verify($password, $admin->getPassword())) {
-                    $_SESSION['admin'] = $admin;
+                if (password_verify($password, $manager->getPassword())) {
+                    $_SESSION['manager'] = $manager;
                     header("Refresh:0; url=/admin");
                 } else {
                     $this->flash('Authentication failed', 'danger');

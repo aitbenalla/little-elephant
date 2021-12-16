@@ -7,13 +7,13 @@ use PDO;
 use PDOException;
 class AuthorRepository extends Database
 {
-    public function getAll()
+    public function getAll(): bool|array|string
     {
         try {
             $sql = 'SELECT author.*, media_author.name, media_author.type
                     FROM author
                     LEFT JOIN media_author ON author.id = media_author.author_id';
-            return $this->getConnection()->query($sql)->fetchAll(PDO::FETCH_CLASS, Author::class);
+            return $this->getConnection()->query($sql)->fetchAll(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, Author::class);
         }
         catch (PDOException $th)
         {
@@ -43,7 +43,7 @@ class AuthorRepository extends Database
     public function flush(Author $author): bool|int|string|null
     {
         try {
-            $sql = 'INSERT INTO author(full_name,birth_date,username,phone,email,password,address,city,country) 
+            $sql = 'INSERT INTO author(full_name,birth_date,username,phone,email,password,address,city,country,created_at) 
                     VALUES(
                         :full_name,
                         :birth_date,
@@ -53,7 +53,8 @@ class AuthorRepository extends Database
                         :password,
                         :address,
                         :city,
-                        :country
+                        :country,
+                        :created_at
                         )';
 
             if ($author->getId()) {
@@ -66,16 +67,18 @@ class AuthorRepository extends Database
                         password = :password,
                         address = :address,
                         city = :city,
-                        country = :country
+                        country = :country,
+                        updated_at = :updated_at
                         WHERE id = :id
                         ';
             }
 
             $conn = $this->getConnection();
-
             $stmt = $conn->prepare($sql);
+
             if ($author->getId()) {
                 $stmt->bindValue(":id", $author->getId());
+                $stmt->bindValue(":updated_at", $author->getUpdatedAt());
             }
             $stmt->bindValue(":full_name", $author->getFullName());
             $stmt->bindValue(":birth_date", $author->getBirthDate());
@@ -86,6 +89,10 @@ class AuthorRepository extends Database
             $stmt->bindValue(":address", $author->getAddress());
             $stmt->bindValue(":city", $author->getCity());
             $stmt->bindValue(":country", $author->getCountry());
+            if ($author->getCreatedAt())
+            {
+                $stmt->bindValue(":created_at", $author->getCreatedAt()->format('Y-m-d H:i:s'));
+            }
 
             $stmt->execute();
 

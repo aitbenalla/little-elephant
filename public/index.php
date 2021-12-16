@@ -7,12 +7,14 @@ use App\Controller\PostController;
 use App\Controller\AuthorController;
 use App\Controller\SecurityController;
 use App\Controller\AdminController;
+use App\Controller\ManagerController;
 
 $request = $_SERVER['REQUEST_URI'];
 $app = new AppController();
 $post = new PostController();
 $author = new AuthorController();
 $admin = new AdminController();
+$manager = new ManagerController();
 $security = new SecurityController();
 
 if (str_ends_with($request, '/')) {
@@ -30,6 +32,21 @@ if (preg_match('/\/admin/', $request) && !preg_match('/\/admin\/login/',$request
                 break;
             case '/admin/authors':
                 $author->list();
+                break;
+            case '/admin/author/new':
+                $author->save();
+                break;
+            case '/admin/posts':
+                $post->list();
+                break;
+            case '/admin/post/new':
+                $post->save();
+                break;
+            case '/admin/managers':
+                $manager->list();
+                break;
+            case '/admin/manager/new':
+                $manager->save();
                 break;
             default:
                 http_response_code(404);

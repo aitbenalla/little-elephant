@@ -4,7 +4,7 @@ namespace App\Entity;
 
 use DateTime;
 use DateTimeZone;
-class Admin
+class Manager
 {
     private ?int $id = null;
     private string $full_name;

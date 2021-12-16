@@ -143,7 +143,7 @@ class AuthorController extends Controller
             }
         }
 
-        $this->display('author/form.tpl');
+        $this->display('admin/author/form.tpl');
     }
 
     public function deleteAuthor(int $id)
