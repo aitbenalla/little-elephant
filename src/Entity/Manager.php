@@ -18,7 +18,7 @@ class Manager
         $datetime = new DateTime('NOW');
         $datetime->setTimezone(new DateTimeZone('Africa/Casablanca'));
         $this->created_at = $datetime;
-        $this->role = 'ROLE_ADMIN';
+        $this->role = 'ROLE_MANAGER';
     }
 
     /**
@@ -101,15 +101,18 @@ class Manager
         $this->role = $role;
     }
 
-    public function getCreatedAt(): ?DateTime
+    /**
+     * @return DateTime|string
+     */
+    public function getCreatedAt(): DateTime|string
     {
         return $this->created_at;
     }
 
     /**
-     * @param DateTime $created_at
+     * @param DateTime|string $created_at
      */
-    public function setCreatedAt(DateTime $created_at): void
+    public function setCreatedAt(DateTime|string $created_at): void
     {
         $this->created_at = $created_at;
     }

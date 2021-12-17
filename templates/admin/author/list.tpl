@@ -43,8 +43,8 @@
                 <td><span class="badge rounded-pill bg-light text-dark">{$author->getCreatedAt()}</span></td>
                 <td>
                   <div class="btn-group btn-group-sm" role="group" aria-label="...">
-                    <a class="btn btn-sm btn-primary" href="/author/edit?id={$author->getId()}"><i class="fas fa-user-edit"></i></a>
-                    <a class="btn btn-sm btn-danger" href="/author/delete?id={$author->getId()}" onclick="return confirm('Are you sure you want to delete this author?');"><i class="fas fa-user-times"></i></a>
+                    <a class="btn btn-sm btn-primary" href="/admin/author/edit?id={$author->getId()}"><i class="fas fa-user-edit"></i></a>
+                    <a class="btn btn-sm btn-danger" href="/admin/author/delete?id={$author->getId()}" onclick="return confirm('Are you sure you want to delete this author?');"><i class="fas fa-user-times"></i></a>
                   </div>
                 </td>
               </tr>

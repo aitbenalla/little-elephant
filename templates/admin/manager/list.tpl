@@ -35,8 +35,8 @@
                                 <td><span class="badge rounded-pill bg-light text-dark">{$manager->getCreatedAt()}</span></td>
                                 <td>
                                     <div class="btn-group btn-group-sm" role="group" aria-label="...">
-                                        <a class="btn btn-sm btn-primary" href="/admin/author/edit?id={$manager->getId()}"><i class="fas fa-user-edit"></i></a>
-                                        <a class="btn btn-sm btn-danger" href="/admin/author/delete?id={$manager->getId()}" onclick="return confirm('Are you sure you want to delete this manager?');"><i class="fas fa-user-times"></i></a>
+                                        <a class="btn btn-sm btn-primary" href="/admin/manager/edit?id={$manager->getId()}"><i class="fas fa-user-edit"></i></a>
+                                        <a class="btn btn-sm btn-danger" href="/admin/manager/delete?id={$manager->getId()}" onclick="return confirm('Are you sure you want to delete this manager?');"><i class="fas fa-user-times"></i></a>
                                     </div>
                                 </td>
                             </tr>

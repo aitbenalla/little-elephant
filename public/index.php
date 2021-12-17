@@ -21,10 +21,46 @@ if (str_ends_with($request, '/')) {
     $request = substr($request, 0, -1);
 }
 
-if (preg_match('/\/admin/', $request) && !preg_match('/\/admin\/login/',$request) && !preg_match('/\/admin\/new/',$request))
-{
-    if (isset($_SESSION['admin']))
-    {
+if (preg_match('/\/admin/', $request) && !preg_match('/\/admin\/login/', $request) && !preg_match('/\/admin\/manager\/new/', $request)) {
+    if (isset($_SESSION['manager'])) {
+
+        if ($_GET) {
+            switch ($request) {
+                case '/admin/author/edit?id=' . $_GET['id']:
+                    if (preg_match('/^\d+$/', $_GET['id'])) {
+                        $author->save($_GET['id']);
+                    } else {
+                        echo 'invalid ID';
+                    }
+                    break;
+                case '/admin/author/delete?id=' . $_GET['id']:
+                    if (preg_match('/^\d+$/', $_GET['id'])) {
+                        $author->deleteAuthor($_GET['id']);
+                    } else {
+                        echo 'invalid ID';
+                    }
+                    break;
+                case '/admin/manager/edit?id=' . $_GET['id']:
+                    if (preg_match('/^\d+$/', $_GET['id'])) {
+                        $manager->save($_GET['id']);
+                    } else {
+                        echo 'invalid ID';
+                    }
+                    break;
+                case '/admin/manager/delete?id=' . $_GET['id']:
+                    if (preg_match('/^\d+$/', $_GET['id'])) {
+                        $manager->deleteManager($_GET['id']);
+                    } else {
+                        echo 'invalid ID';
+                    }
+                    break;
+                default:
+                    http_response_code(404);
+                    $app->error();
+                    break;
+            }
+        }
+
         switch ($request) {
             case '/admin':
             case '/admin/dashboard':
@@ -53,12 +89,10 @@ if (preg_match('/\/admin/', $request) && !preg_match('/\/admin\/login/',$request
                 $app->error();
                 break;
         }
-    }
-    else {
+    } else {
         header('Refresh:0; url=/admin/login');
     }
-}
-else {
+} else {
     switch ($request) {
         case '/home':
         case '':
@@ -79,8 +113,11 @@ else {
         case '/admin/login':
             $security->loginAdmin();
             break;
-        case '/admin/new':
-            $admin->save();
+        case '/admin/manager/new':
+            $manager->save();
+            break;
+        case '/profile/'.$_SESSION['author']->getUsername():
+            $app->profile($_SESSION['author']->getUsername());
             break;
         default:
             http_response_code(404);

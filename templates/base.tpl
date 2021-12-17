@@ -3,8 +3,9 @@
 <main class="flex-shrink-0">
 <div class="container mt-4">
   {if isset($smarty.session.flash)}
-  {$type = $smarty.session.flash.type}
-    <div class='alert alert-{$type}' role='alert'>{$smarty.session.flash.message}</div>
+      {foreach from=$smarty.session.flash item=flash}
+          <div class='alert alert-{$flash.type}' role='alert'>{$flash.message}</div>
+      {/foreach}
     {php}
       unset($_SESSION['flash']);
     {/php}

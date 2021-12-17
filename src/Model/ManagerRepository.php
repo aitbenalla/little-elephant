@@ -7,10 +7,25 @@ use PDO;
 use PDOException;
 class ManagerRepository extends Database
 {
-    public function flush(Manager $admin): bool|int|string|null
+
+    public function getAll(): bool|array|string
     {
         try {
-            $sql = 'INSERT INTO admin(full_name,email,password,role,created_at) 
+            $sql = 'SELECT * FROM manager';
+
+            return $this->getConnection()->query($sql)->fetchAll(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, Manager::class);
+        }
+        catch (PDOException $th)
+        {
+            return $th->getMessage();
+        }
+
+    }
+
+    public function flush(Manager $manager): bool|int|string|null
+    {
+        try {
+            $sql = 'INSERT INTO manager(full_name,email,password,role,created_at) 
                     VALUES(
                         :full_name,
                         :email,
@@ -19,8 +34,8 @@ class ManagerRepository extends Database
                         :created_at
                         )';
 
-            if ($admin->getId()) {
-                $sql = 'UPDATE admin SET 
+            if ($manager->getId()) {
+                $sql = 'UPDATE manager SET 
                         full_name = :full_name,
                         email = :email,
                         password = :password,
@@ -32,26 +47,26 @@ class ManagerRepository extends Database
             $conn = $this->getConnection();
 
             $stmt = $conn->prepare($sql);
-            if ($admin->getId()) {
-                $stmt->bindValue(":id", $admin->getId());
+            if ($manager->getId()) {
+                $stmt->bindValue(":id", $manager->getId());
             }
-            $stmt->bindValue(":full_name", $admin->getFullName());
-            $stmt->bindValue(":email", $admin->getEmail());
-            $stmt->bindValue(":password", $admin->getPassword());
-            $stmt->bindValue(":role", $admin->getRole());
-            if ($admin->getCreatedAt())
+            $stmt->bindValue(":full_name", $manager->getFullName());
+            $stmt->bindValue(":email", $manager->getEmail());
+            $stmt->bindValue(":password", $manager->getPassword());
+            $stmt->bindValue(":role", $manager->getRole());
+            if ($manager->getCreatedAt())
             {
-                $stmt->bindValue(":created_at", $admin->getCreatedAt()->format('Y-m-d H:i:s'));
+                $stmt->bindValue(":created_at", $manager->getCreatedAt()->format('Y-m-d H:i:s'));
             }
             $stmt->execute();
 
-            $admin_id = $conn->lastInsertId();
+            $manager_id = $conn->lastInsertId();
 
-            if ($admin->getId()) {
-                return $admin->getId();
+            if ($manager->getId()) {
+                return $manager->getId();
             }
 
-            return $admin_id;
+            return $manager_id;
         }
         catch (PDOException $th)
         {
@@ -64,7 +79,7 @@ class ManagerRepository extends Database
         try {
             $conn = $this->getConnection();
 
-            $stmt = $conn->prepare('SELECT * FROM admin WHERE email = ?');
+            $stmt = $conn->prepare('SELECT * FROM manager WHERE email = ?');
 //            $stmt->bindParam(':email', $email);
             $stmt->execute([$email]);
 
@@ -80,6 +95,18 @@ class ManagerRepository extends Database
 
     public function getOneById(int $id)
     {
-        return true;
+        try {
+            $conn = $this->getConnection();
+            $stmt = $conn->prepare('SELECT * FROM manager WHERE id=? LIMIT 1');
+
+            $stmt->execute([$id]);
+            $stmt->setFetchMode(PDO::FETCH_CLASS, Manager::class);
+
+            return $stmt->fetch();
+        }
+        catch (PDOException $th)
+        {
+            return $th->getMessage();
+        }
     }
 }

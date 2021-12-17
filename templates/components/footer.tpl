@@ -11,11 +11,14 @@
 <script>
     
     setTimeout(function() {
-        let alert = document.querySelector(".alert");
-            alert.remove();
+        var paras = document.getElementsByClassName('alert');
+
+        while(paras[0]) {
+            paras[0].parentNode.removeChild(paras[0]);
+        }
     }, 5000);
     
-    </script>
+</script>
 </body>
 
 </html>

@@ -21,12 +21,21 @@ class SecurityController extends Controller
 
                 $manager = $repository->getAuth($email);
 
-                if (password_verify($password, $manager->getPassword())) {
-                    $_SESSION['manager'] = $manager;
-                    header("Refresh:0; url=/admin");
-                } else {
-                    $this->flash('Authentication failed', 'danger');
+                if (is_object($manager))
+                {
+                    if (password_verify($password, $manager->getPassword())) {
+                        $_SESSION['manager'] = $manager;
+                        header("Refresh:0; url=/admin");
+                    }
                 }
+                else
+                {
+                    $this->flash('Authentication failed', 'danger','ma_auth_error');
+                    if ($manager)
+                        $this->flash($manager,'danger','ma_auth_error2');
+                }
+
+
             }
             $this->assign('action','/admin/login');
             $this->display('security/login.tpl');
@@ -53,9 +62,9 @@ class SecurityController extends Controller
 
                 if (password_verify($password, $author->getPassword())) {
                     $_SESSION['author'] = $author;
-                    header("Refresh:0; url=/home");
+                    header("Refresh:0; url=/profile/".$author->getUsername());
                 } else {
-                    $this->flash('Authentication failed', 'danger');
+                    $this->flash('Authentication failed', 'danger', 'at_auth_error');
                 }
             }
             $this->assign('action','/login');

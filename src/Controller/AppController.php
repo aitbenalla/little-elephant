@@ -18,15 +18,15 @@ class AppController extends Controller
             if (is_object($this->getDB()->getServer())) {
 
                 if ($_POST['db_execute'] === '1') {
-                    $this->flash('Connection succeeded', 'success');
+                    $this->flash('Server Connected', 'success','s_success');
                 }
                 if ($_POST['db_execute'] === '2') {
                     $creating = $this->getDB()->createDatabase();
 
                     if ($creating === true) {
-                        $this->flash('Database created successfully', 'success');
+                        $this->flash('Database created successfully', 'success','db_created');
                     } else {
-                        $this->flash($creating, 'danger');
+                        $this->flash($creating, 'danger', 'db_error');
                     }
                 }
                 if ($_POST['db_execute'] === '3' && is_object($this->getDB()->getConnection())) {
@@ -34,23 +34,23 @@ class AppController extends Controller
                     $mediaAuthor = $this->getDB()->createTableMediaAuthor();
                     $post = $this->getDB()->createTablePost();
                     $mediaPost = $this->getDB()->createTableMediaPost();
-                    $admin = $this->getDB()->createTableAdmin();
+                    $manager = $this->getDB()->createTableManager();
 
                     if ($author === true
                         && $mediaAuthor === true
                         && $post === true
                         && $mediaPost === true
-                        && $admin === true
+                        && $manager === true
                     ) {
-                        $this->flash('Tables created successfully', 'success');
+                        $this->flash('Tables created successfully', 'success','tables_created');
                     } else {
-                        $this->flash('Tables cannot be created or all ready created', 'danger');
+                        $this->flash('Tables cannot be created or all ready created', 'danger', 'tables_error');
                     }
                 } else if ($_POST['db_execute'] === '3' && !is_object($this->getDB()->getConnection())) {
-                    $this->flash($this->getDB()->getConnection(), 'danger');
+                    $this->flash($this->getDB()->getConnection(), 'danger', 'c_error');
                 }
             } else {
-                $this->flash($this->getDB()->getServer(), 'danger');
+                $this->flash($this->getDB()->getServer(), 'danger', 's_error');
             }
         }
 
@@ -64,9 +64,7 @@ class AppController extends Controller
     {
         $repository = new AuthorRepository();
 
-        $authors = $repository->getAll();
-
-        $this->display('authors.tpl', ['authors' => $authors]);
+        $this->display('authors.tpl', ['authors' => $repository->getAll()]);
     }
 
     /**
@@ -94,7 +92,7 @@ class AppController extends Controller
                         if (preg_match(self::full_name_pattern, $value)) {
                             $author->setFullName($value);
                         } else {
-                            $this->flash('Invalid name given.', 'danger');
+                            $this->flash('Invalid name given.', 'danger', 'fl_error');
                             header("Refresh:0");
                             exit;
                         }
@@ -103,7 +101,7 @@ class AppController extends Controller
                         if ($this->validateAge($value)) {
                             $author->setBirthDate($value);
                         } else {
-                            $this->flash('You Must be 18 or Older.', 'danger');
+                            $this->flash('You Must be 18 or Older.', 'danger', 'bd_error');
                             header("Refresh:0");
                             exit;
                         }
@@ -112,7 +110,7 @@ class AppController extends Controller
                         if (preg_match(self::username_pattern, $value)) {
                             $author->setUsername($value);
                         } else {
-                            $this->flash('Invalid username.', 'danger');
+                            $this->flash('Invalid username.', 'danger', 'us_error');
                             header("Refresh:0");
                             exit;
                         }
@@ -121,7 +119,7 @@ class AppController extends Controller
                         if (preg_match(self::phone_pattern, $value)) {
                             $author->setPhone(trim($value));
                         } else {
-                            $this->flash('Invalid phone number.', 'danger');
+                            $this->flash('Invalid phone number.', 'danger', 'ph_error');
                             header("Refresh:0");
                             exit;
                         }
@@ -131,7 +129,7 @@ class AppController extends Controller
                         if (preg_match(self::email_pattern, $value)) {
                             $author->setEmail(trim($value));
                         } else {
-                            $this->flash('Invalid Email address.', 'danger');
+                            $this->flash('Invalid Email address.', 'danger', 'email_error');
                             header("Refresh:0");
                             exit;
                         }
@@ -141,12 +139,12 @@ class AppController extends Controller
                             if ($value === $_POST['password_repeat']) {
                                 $author->setPassword($this->hashThePass($value));
                             } else {
-                                $this->flash('Passwords not match.', 'danger');
+                                $this->flash('Passwords not match.', 'danger', 'ps_error');
                                 header("Refresh:0");
                                 exit;
                             }
                         } else {
-                            $this->flash('Password not strong enough / Password too short.', 'danger');
+                            $this->flash('Password not strong enough / Password too short.', 'danger', 'ps_error2');
                             header("Refresh:0");
                             exit;
                         }
@@ -186,11 +184,19 @@ class AppController extends Controller
 
             if ($result) {
 
-                $this->flash('Saved. <a href="/authors">Go To List</a>', 'success');
+                $this->flash('Saved. <a href="/authors">Go To List</a>', 'success', 'au_saved');
             }
         }
 
         $this->display('register.tpl');
+    }
+
+    /**
+     * @throws SmartyException
+     */
+    public function profile($author)
+    {
+        $this->display('profile.tpl');
     }
 
     public function error()

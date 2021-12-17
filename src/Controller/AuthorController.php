@@ -16,9 +16,7 @@ class AuthorController extends Controller
     {
         $repository = new AuthorRepository();
 
-        $authors = $repository->getAll();
-
-        $this->display('admin/author/list.tpl', ['authors' => $authors]);
+        $this->display('admin/author/list.tpl', ['authors' => $repository->getAll()]);
     }
 
     /**
@@ -37,6 +35,12 @@ class AuthorController extends Controller
             if ($author) {
                 $this->assign('author', $author);
             }
+            else
+            {
+                $this->flash('Author not found.', 'danger', 'au_not_found');
+                header("Refresh:0; url=/admin/authors");
+                exit();
+            }
         }
 
         if (isset($_POST['save'])) {
@@ -47,7 +51,7 @@ class AuthorController extends Controller
                         if (preg_match(self::full_name_pattern, $value)) {
                             $author->setFullName($value);
                         } else {
-                            $this->flash('Invalid name given.', 'danger');
+                            $this->flash('Invalid name given.', 'danger', 'fl_error');
                             header("Refresh:0");
                             exit;
                         }
@@ -56,7 +60,7 @@ class AuthorController extends Controller
                         if ($this->validateAge($value)) {
                             $author->setBirthDate($value);
                         } else {
-                            $this->flash('You Must be 18 or Older.', 'danger');
+                            $this->flash('You Must be 18 or Older.', 'danger', 'bd_error');
                             header("Refresh:0");
                             exit;
                         }
@@ -65,7 +69,7 @@ class AuthorController extends Controller
                         if (preg_match(self::username_pattern, $value)) {
                             $author->setUsername($value);
                         } else {
-                            $this->flash('Invalid username.', 'danger');
+                            $this->flash('Invalid username.', 'danger', 'us_error');
                             header("Refresh:0");
                             exit;
                         }
@@ -74,7 +78,7 @@ class AuthorController extends Controller
                         if (preg_match(self::phone_pattern, $value)) {
                             $author->setPhone(trim($value));
                         } else {
-                            $this->flash('Invalid phone number.', 'danger');
+                            $this->flash('Invalid phone number.', 'danger', 'ph_error');
                             header("Refresh:0");
                             exit;
                         }
@@ -84,7 +88,7 @@ class AuthorController extends Controller
                         if (preg_match(self::email_pattern, $value)) {
                             $author->setEmail(trim($value));
                         } else {
-                            $this->flash('Invalid Email address.', 'danger');
+                            $this->flash('Invalid Email address.', 'danger', 'email_error');
                             header("Refresh:0");
                             exit;
                         }
@@ -94,12 +98,12 @@ class AuthorController extends Controller
                             if ($value === $_POST['password_repeat']) {
                                 $author->setPassword($this->hashThePass($value));
                             } else {
-                                $this->flash('Passwords not match.', 'danger');
+                                $this->flash('Passwords not match.', 'danger', 'ps_error');
                                 header("Refresh:0");
                                 exit;
                             }
                         } else {
-                            $this->flash('Password not strong enough / Password too short.', 'danger');
+                            $this->flash('Password not strong enough / Password too short.', 'danger', 'ps_error2');
                             header("Refresh:0");
                             exit;
                         }
@@ -139,7 +143,7 @@ class AuthorController extends Controller
 
             if ($result) {
 
-                $this->flash('Saved. <a href="/authors">Go To List</a>', 'success');
+                $this->flash('Saved. <a href="/authors">Go To List</a>', 'success', 'au_saved');
             }
         }
 

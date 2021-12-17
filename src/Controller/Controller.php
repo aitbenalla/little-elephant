@@ -44,14 +44,14 @@ class Controller extends SmartyBC
         return new Database();
     }
 
-    function flash(string $message, string $type): void
+    function flash(string $message, string $type,string $name): void
     {
         // remove existing message with the name
-        if (isset($_SESSION['flash'])) {
-            unset($_SESSION['flash']);
-        }
+//        if (isset($_SESSION['flash'])) {
+//            unset($_SESSION['flash']);
+//        }
         // add the message to the session
-        $_SESSION['flash'] = ['message' => $message, 'type' => $type];
+        $_SESSION['flash'][$name] = ['message' => $message, 'type' => $type];
     }
 
     public function validateAge($date): bool
@@ -79,5 +79,10 @@ class Controller extends SmartyBC
             'cost' => 12,
         ];
         return password_hash($pass, PASSWORD_BCRYPT, $options);
+    }
+
+    public function persist($post)
+    {
+
     }
 }

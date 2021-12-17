@@ -13,8 +13,12 @@ class ManagerController extends Controller
      */
     public function list()
     {
+        $repository = new ManagerRepository();
+
+        $this->assign('managers', $repository->getAll());
         $this->display('admin/manager/list.tpl');
     }
+
     /**
      * @throws SmartyException
      */
@@ -29,6 +33,12 @@ class ManagerController extends Controller
             if ($manager) {
                 $this->assign('manager', $manager);
             }
+            else
+            {
+                $this->flash('Manager not found.', 'danger', 'ma_not_found');
+                header("Refresh:0; url=/admin/managers");
+                exit();
+            }
         }
 
         if (isset($_POST['save'])) {
@@ -39,7 +49,7 @@ class ManagerController extends Controller
                         if (preg_match(self::full_name_pattern, $value)) {
                             $manager->setFullName($value);
                         } else {
-                            $this->flash('Invalid name given.', 'danger');
+                            $this->flash('Invalid name given.', 'danger', 'fl_error');
                             header("Refresh:0");
                             exit;
                         }
@@ -49,7 +59,7 @@ class ManagerController extends Controller
                         if (preg_match(self::email_pattern, $value)) {
                             $manager->setEmail(trim($value));
                         } else {
-                            $this->flash('Invalid Email address.', 'danger');
+                            $this->flash('Invalid Email address.', 'danger', 'email_error');
                             header("Refresh:0");
                             exit;
                         }
@@ -59,12 +69,12 @@ class ManagerController extends Controller
                             if ($value === $_POST['password_repeat']) {
                                 $manager->setPassword($this->hashThePass($value));
                             } else {
-                                $this->flash('Passwords not match.', 'danger');
+                                $this->flash('Passwords not match.', 'danger', 'ps_error');
                                 header("Refresh:0");
                                 exit;
                             }
                         } else {
-                            $this->flash('Password not strong enough / Password too short.', 'danger');
+                            $this->flash('Password not strong enough / Password too short.', 'danger', 'ps_error2');
                             header("Refresh:0");
                             exit;
                         }
@@ -80,7 +90,7 @@ class ManagerController extends Controller
 
             if ($result) {
 
-                $this->flash('Saved. <a href="/managers">Go To List</a>', 'success');
+                $this->flash('Saved. <a href="/admin/managers">Go To List</a>', 'success', 'mn_saved');
             }
         }
 

@@ -14,23 +14,23 @@
                 </div>
                 <div class="col-md-6">
                     <label for="inputFullName" class="form-label">Full Name</label>
-                    <input type="text" name="full_name" class="form-control" id="inputFullName" {if isset($author)}value="{$author->getFullName()}"{/if}>
+                    <input type="text" name="full_name" class="form-control" id="inputFullName">
                 </div>
                 <div class="col-md-6">
                     <label for="inputUsername" class="form-label">Username</label>
-                    <input type="text" name="username" class="form-control" id="inputUsername" {if isset($author)}value="{$author->getUsername()}"{/if} required>
+                    <input type="text" name="username" class="form-control" id="inputUsername" required>
                 </div>
                 <div class="col-md-6">
                     <label for="inputBirthDate" class="form-label">Birth Date</label>
-                    <input type="date" name="birth_date" class="form-control" id="inputBirthDate" {if isset($author)}value="{$author->getBirthDate()}"{/if} required>
+                    <input type="date" name="birth_date" class="form-control" id="inputBirthDate" required>
                 </div>
                 <div class="col-md-6">
                     <label for="inputEmail" class="form-label">Email</label>
-                    <input type="email" name="email" class="form-control" id="inputEmail" {if isset($author)}value="{$author->getEmail()}"{/if} required>
+                    <input type="email" name="email" class="form-control" id="inputEmail" required>
                 </div>
                 <div class="col-md-6">
                     <label for="inputPhone" class="form-label">Phone</label>
-                    <input type="tel" name="phone" class="form-control" id="inputPhone" {if isset($author)}value="0{$author->getPhone()}"{/if} required>
+                    <input type="tel" name="phone" class="form-control" id="inputPhone">
                 </div>
                 <div class="col-md-6">
                     <label for="inputPassword" class="form-label">Password</label>
@@ -42,25 +42,21 @@
                 </div>
                 <div class="col-12">
                     <label for="inputAddress" class="form-label">Address</label>
-                    <input type="text" class="form-control" name="address" id="inputAddress" {if isset($author)}value="{$author->getAddress()}"{/if} placeholder="1234 Main St">
+                    <input type="text" class="form-control" name="address" id="inputAddress" placeholder="1234 Main St">
                 </div>
                 <div class="col-md-6">
                     <label for="inputCity" class="form-label">City</label>
-                    <input type="text" class="form-control" name="city" id="inputCity" {if isset($author)}value="{$author->getCity()}"{/if} required>
+                    <input type="text" class="form-control" name="city" id="inputCity">
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <label for="inputCountry" class="form-label">Country</label>
-                    <select id="inputCountry" name="country" class="form-select" required>
+                    <select id="inputCountry" name="country" class="form-select">
 
                         {foreach from=$countries item=country key=key name=name}
-                            <option value="{$country}" {if isset($author) and $author->getCountry() eq $country}selected{/if}>{$country}</option>
+                            <option value="{$country}">{$country}</option>
                         {/foreach}
 
                     </select>
-                </div>
-                <div class="col-md-2">
-                    <label for="inputZip" class="form-label">Zip</label>
-                    <input type="text" class="form-control" name="zip" id="inputZip" {if isset($author)}value="{$author->getZip()}"{/if} required>
                 </div>
                 <div class="col-12">
                     <div class="form-check">

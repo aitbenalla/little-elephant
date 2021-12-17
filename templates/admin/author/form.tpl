@@ -31,7 +31,7 @@
           </div>
           <div class="col-md-6">
             <label for="inputPhone" class="form-label">Phone</label>
-            <input type="tel" name="phone" class="form-control" id="inputPhone" {if isset($author)}value="0{$author->getPhone()}"{/if} required>
+            <input type="tel" name="phone" class="form-control" id="inputPhone" {if isset($author)}value="0{$author->getPhone()}"{/if}>
           </div>
           <div class="col-md-6">
             <label for="inputPassword" class="form-label">Password</label>
@@ -47,21 +47,17 @@
           </div>
           <div class="col-md-6">
             <label for="inputCity" class="form-label">City</label>
-            <input type="text" class="form-control" name="city" id="inputCity" {if isset($author)}value="{$author->getCity()}"{/if} required>
+            <input type="text" class="form-control" name="city" id="inputCity" {if isset($author)}value="{$author->getCity()}"{/if}>
           </div>
-          <div class="col-md-4">
+          <div class="col-md-6">
             <label for="inputCountry" class="form-label">Country</label>
-            <select id="inputCountry" name="country" class="form-select" required>
+            <select id="inputCountry" name="country" class="form-select">
           
               {foreach from=$countries item=country key=key name=name}
                 <option value="{$country}" {if isset($author) and $author->getCountry() eq $country}selected{/if}>{$country}</option>
               {/foreach}
               
             </select>
-          </div>
-          <div class="col-md-2">
-            <label for="inputZip" class="form-label">Zip</label>
-            <input type="text" class="form-control" name="zip" id="inputZip" {if isset($author)}value="{$author->getZip()}"{/if} required>
           </div>
           <div class="col-12">
             <div class="form-check">
