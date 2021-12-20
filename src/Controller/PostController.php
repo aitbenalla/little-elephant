@@ -15,7 +15,7 @@ class PostController extends Controller
     /**
      * @throws \SmartyException
      */
-    public function save($id = null)
+    public function save($id)
     {
         $this->display('admin/post/form.tpl');
     }

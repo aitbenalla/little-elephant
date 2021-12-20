@@ -18,11 +18,24 @@
 # RewriteCond %{REQUEST_FILENAME}.php -f [NC]
 # RewriteRule ^ %{REQUEST_URI}.php [L]
 # AddType application/x-httpd-php .bop .foo .133t
+#<IfModule mod_rewrite.c>
+#    Options -MultiViews
+#    RewriteEngine On
+#    RewriteCond %{REQUEST_FILENAME} !-f
+#    RewriteRule ^(.*)$ index.php [QSA,L]
+#</IfModule>
+#
+#<IfModule !mod_rewrite.c>
+#    <IfModule mod_alias.c>
+#        RedirectMatch 302 ^/$ /index.php/
+#    </IfModule>
+#</IfModule>
+
 <IfModule mod_rewrite.c>
     Options -MultiViews
     RewriteEngine On
     RewriteCond %{REQUEST_FILENAME} !-f
-    RewriteRule ^(.*)$ index.php [QSA,L]
+    RewriteRule ^(.*)$ index.php?url=$1 [QSA,L]
 </IfModule>
 
 <IfModule !mod_rewrite.c>
