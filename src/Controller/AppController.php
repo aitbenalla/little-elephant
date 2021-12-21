@@ -6,6 +6,7 @@ use App\Entity\Author;
 use App\Entity\MediaAuthor;
 use App\Model\AuthorRepository;
 use App\Model\MediaAuthorRepository;
+use JetBrains\PhpStorm\NoReturn;
 use SmartyException;
 class AppController extends Controller
 {
@@ -194,9 +195,23 @@ class AppController extends Controller
     /**
      * @throws SmartyException
      */
-    public function profile($author)
+    #[NoReturn]
+    public function profile($username)
     {
-        $this->display('profile.tpl');
+        $repository = new AuthorRepository();
+        $profile = $repository->getOneByUsername($username);
+
+        if (is_object($profile))
+        {
+            $this->display('profile.tpl');
+        }
+        else
+        {
+            $this->flash('Profile not found', 'danger', 'profile_not_found');
+            header("Refresh:0; url=/");
+            exit;
+        }
+
     }
 
     public function error()

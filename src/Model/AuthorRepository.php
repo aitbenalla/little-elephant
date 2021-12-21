@@ -22,6 +22,24 @@ class AuthorRepository extends Database
 
     }
 
+    public function getOneByUsername(string $username)
+    {
+        try {
+            $conn = $this->getConnection();
+            $stmt = $conn->prepare('SELECT * FROM author WHERE username=? LIMIT 1');
+
+            $stmt->execute([$username]);
+            $stmt->setFetchMode(PDO::FETCH_CLASS, Author::class);
+
+            return $stmt->fetch();
+        }
+        catch (PDOException $th)
+        {
+            return $th->getMessage();
+        }
+
+    }
+
     public function getOneById(int $id)
     {
         try {

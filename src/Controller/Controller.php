@@ -44,7 +44,7 @@ class Controller extends SmartyBC
         return new Database();
     }
 
-    function flash(string $message, string $type,string $name): void
+    public function flash(string $message, string $type,string $name): void
     {
         // remove existing message with the name
 //        if (isset($_SESSION['flash'])) {

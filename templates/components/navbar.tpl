@@ -29,11 +29,11 @@
                         <ul class="dropdown-menu dropdown-menu-lg-end" aria-labelledby="dropdownUser1">
                             <li><a class="dropdown-item" href="#">New post</a></li>
                             <li><a class="dropdown-item" href="#">Settings</a></li>
-                            <li><a class="dropdown-item" href="#">Profile</a></li>
+                            <li><a class="dropdown-item" href="/profile/{$smarty.session.author->getUsername()}">Profile</a></li>
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
-                            <li><a class="dropdown-item" href="/signout">Sign out</a></li>
+                            <li><a class="dropdown-item" href="/logout">Logout</a></li>
                         </ul>
                     </div>
                     {else}

@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Model\ManagerRepository;
 use App\Model\AuthorRepository;
+use JetBrains\PhpStorm\NoReturn;
 use SmartyException;
 class SecurityController extends Controller
 {
@@ -46,6 +47,14 @@ class SecurityController extends Controller
 
     }
 
+    #[NoReturn]
+    public function logoutAdmin()
+    {
+        unset($_SESSION['manager']);
+        header("Refresh:0; url=/");
+        exit();
+    }
+
     /**
      * @throws SmartyException
      */
@@ -63,6 +72,7 @@ class SecurityController extends Controller
                 if (password_verify($password, $author->getPassword())) {
                     $_SESSION['author'] = $author;
                     header("Refresh:0; url=/profile/".$author->getUsername());
+                    exit();
                 } else {
                     $this->flash('Authentication failed', 'danger', 'at_auth_error');
                 }
@@ -71,7 +81,16 @@ class SecurityController extends Controller
             $this->display('security/login.tpl');
         }
         else {
-            header("Refresh:0; url=/home");
+            header("Refresh:0; url=/");
+            exit();
         }
+    }
+
+    #[NoReturn]
+    public function logoutAuthor()
+    {
+        unset($_SESSION['author']);
+        header("Refresh:0; url=/");
+        exit();
     }
 }
