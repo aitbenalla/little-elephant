@@ -1,14 +1,14 @@
 {extends file="admin/base.tpl"}
 {$title = 'Managers'}
-{block name=stylesheets}
+{block name="stylesheets"}
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
 {/block}
-{block name=javascripts}
+{block name="javascripts"}
     <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
     <script src="/assets/admin/js/datatable-config.js"></script>
 {/block}
 
-{block name=content}
+{block name="content"}
     <div class="row row-cols-1 row-cols-md-3 g-4 py-4">
         <div class="col-lg-12">
             <a class="btn btn-primary mb-3" href="/admin/manager/new"><i class="fas fa-user-edit"></i> Add New Manager</a>

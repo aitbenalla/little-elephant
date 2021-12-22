@@ -4,7 +4,7 @@
 {else}
     {$title = 'Add Manager'}
 {/if}
-{block name=content}
+{block name="content"}
     <div class="row p-3">
         <div class="col-lg-12">
             <form class="row g-3" method="POST" action="" enctype="multipart/form-data">

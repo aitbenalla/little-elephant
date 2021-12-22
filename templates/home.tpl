@@ -1,6 +1,6 @@
 {extends file="base.tpl"}
 {$title = 'Home'}
-{block name=content}
+{block name="content"}
   <div class="text-center py-5 mb-5">
     <img class="d-block mx-auto mb-4" src="/assets/media/logo.png" alt="" width="80">
     <h1 class="display-5 fw-bold">Welcome Little Elephant</h1>

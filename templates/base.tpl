@@ -10,7 +10,7 @@
       unset($_SESSION['flash']);
     {/php}
   {/if}
-  {block name=content}{/block}
+  {block name="content"}{/block}
 </div>
 </main>
 {include file="components/footer.tpl"}

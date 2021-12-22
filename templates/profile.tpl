@@ -1,2 +1,6 @@
 {extends file="base.tpl"}
-{$title = 'Profile'}
+{$title = $profile->getUsername()|capitalize}
+
+{block name="content"}
+
+{/block}

@@ -71,7 +71,7 @@ class SecurityController extends Controller
 
                 if (password_verify($password, $author->getPassword())) {
                     $_SESSION['author'] = $author;
-                    header("Refresh:0; url=/profile/".$author->getUsername());
+                    header("Refresh:0; url=/me");
                     exit();
                 } else {
                     $this->flash('Authentication failed', 'danger', 'at_auth_error');

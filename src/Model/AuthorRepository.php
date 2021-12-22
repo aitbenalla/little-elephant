@@ -26,10 +26,10 @@ class AuthorRepository extends Database
     {
         try {
             $conn = $this->getConnection();
-            $stmt = $conn->prepare('SELECT * FROM author WHERE username=? LIMIT 1');
+            $stmt = $conn->prepare('SELECT author.*, media_author.name, media_author.type FROM author LEFT JOIN media_author ON author.id = media_author.author_id WHERE username=? LIMIT 1');
 
             $stmt->execute([$username]);
-            $stmt->setFetchMode(PDO::FETCH_CLASS, Author::class);
+            $stmt->setFetchMode(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, Author::class);
 
             return $stmt->fetch();
         }
@@ -44,10 +44,10 @@ class AuthorRepository extends Database
     {
         try {
             $conn = $this->getConnection();
-            $stmt = $conn->prepare('SELECT * FROM author WHERE id=? LIMIT 1');
+            $stmt = $conn->prepare('SELECT author.*, media_author.name, media_author.type FROM author LEFT JOIN media_author ON author.id = media_author.author_id WHERE id=? LIMIT 1');
 
             $stmt->execute([$id]);
-            $stmt->setFetchMode(PDO::FETCH_CLASS, Author::class);
+            $stmt->setFetchMode(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, Author::class);
 
             return $stmt->fetch();
         }
@@ -149,7 +149,7 @@ class AuthorRepository extends Database
         try {
             $conn = $this->getConnection();
 
-            $stmt = $conn->prepare('SELECT * FROM author WHERE email = ?');
+            $stmt = $conn->prepare('SELECT author.*, media_author.name, media_author.type FROM author LEFT JOIN media_author ON author.id = media_author.author_id WHERE email = ?');
             $stmt->execute([$email]);
 
             $stmt->setFetchMode(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, Author::class);

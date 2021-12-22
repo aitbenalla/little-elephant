@@ -203,7 +203,7 @@ class AppController extends Controller
 
         if (is_object($profile))
         {
-            $this->display('profile.tpl');
+            $this->display('profile.tpl', ['profile'=>$profile]);
         }
         else
         {
