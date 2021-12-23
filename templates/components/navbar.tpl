@@ -16,6 +16,11 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/posts">Posts</a>
                 </li>
+                {if isset($smarty.session.author)}
+                <li class="nav-item">
+                    <a class="nav-link" href="/create">Create</a>
+                </li>
+                {/if}
             </ul>
             <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
                 <input class="form-control" type="text" placeholder="Search" aria-label="Search">

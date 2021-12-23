@@ -214,6 +214,34 @@ class AppController extends Controller
 
     }
 
+    /**
+     * @throws SmartyException
+     */
+    #[NoReturn]
+    public function create()
+    {
+        if (isset($_SESSION['author']))
+        {
+            if (isset($_POST['postIt']))
+            {
+                foreach ($_POST as $key => $value) {
+                    switch ($key) {
+
+                    }
+                }
+
+            }
+
+            $this->display('create.tpl');
+        }
+        else
+        {
+            header("Refresh:0; url=/login");
+            exit;
+        }
+
+    }
+
     public function error()
     {
         echo '404';

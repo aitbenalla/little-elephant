@@ -14,6 +14,7 @@ $router->any('/login' , 'Security#loginAuthor');
 $router->get('/logout' , 'Security#logoutAuthor');
 $router->get('/profile/:username' , 'App#profile');
 $router->any('/me' , 'Profile#dashboard');
+$router->any('/create' , 'App#create');
 $router->get('/admin' , 'Admin#dashboard');
 $router->get('/admin/dashboard' , 'Admin#dashboard');
 $router->get('/admin/authors' , 'Author#list');
