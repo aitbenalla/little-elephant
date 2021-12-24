@@ -9,6 +9,8 @@ class Post
     private ?int $id = null;
     private string $title;
     private string $content;
+    private string $slug;
+    private int $category;
     private DateTime $created_at;
     private DateTime $updated_at;
     private int $author;
@@ -64,6 +66,38 @@ class Post
     public function setContent(string $content): void
     {
         $this->content = $content;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSlug(): string
+    {
+        return $this->slug;
+    }
+
+    /**
+     * @param string $slug
+     */
+    public function setSlug(string $slug): void
+    {
+        $this->slug = $slug;
+    }
+
+    /**
+     * @return int
+     */
+    public function getCategory(): int
+    {
+        return $this->category;
+    }
+
+    /**
+     * @param int $category
+     */
+    public function setCategory(int $category): void
+    {
+        $this->category = $category;
     }
 
     /**

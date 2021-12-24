@@ -109,6 +109,24 @@ class Database
 
     }
 
+    public function createTableCategory(): bool|string
+    {
+        try {
+
+            $sql = "CREATE TABLE `category` (
+        `id` INT(11) AUTO_INCREMENT PRIMARY KEY,
+        `name` VARCHAR(100) NOT NULL,
+        `slug` LONGTEXT NOT NULL
+      )ENGINE=InnoDB;";
+
+            $this->getConnection()->exec($sql);
+
+            return true;
+        } catch (PDOException $th) {
+            return $th->getMessage();
+        }
+    }
+
     public function createTablePost(): bool|string
     {
         try {
@@ -117,10 +135,13 @@ class Database
         `id` INT(11) AUTO_INCREMENT PRIMARY KEY,
         `title` VARCHAR(180) NOT NULL,
         `content` LONGTEXT NOT NULL,
+        `slug` LONGTEXT NOT NULL,
         `updated_at` DATETIME,
         `created_at` DATETIME NOT NULL,
         author_id INT NOT NULL,
-        FOREIGN KEY (author_id) REFERENCES author(id)
+        category_id INT NOT NULL,
+        FOREIGN KEY (author_id) REFERENCES author(id),
+        FOREIGN KEY (category_id) REFERENCES category(id)
       )ENGINE=InnoDB;";
 
             $this->getConnection()->exec($sql);

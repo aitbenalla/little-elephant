@@ -4,7 +4,9 @@ namespace App\Controller;
 
 use App\Entity\Author;
 use App\Entity\MediaAuthor;
+use App\Entity\Post;
 use App\Model\AuthorRepository;
+use App\Model\CategoryRepository;
 use App\Model\MediaAuthorRepository;
 use JetBrains\PhpStorm\NoReturn;
 use SmartyException;
@@ -36,12 +38,15 @@ class AppController extends Controller
                     $post = $this->getDB()->createTablePost();
                     $mediaPost = $this->getDB()->createTableMediaPost();
                     $manager = $this->getDB()->createTableManager();
+                    $category = $this->getDB()->createTableCategory();
 
-                    if ($author === true
+                    if (
+                        $author === true
                         && $mediaAuthor === true
                         && $post === true
                         && $mediaPost === true
                         && $manager === true
+                        && $category === true
                     ) {
                         $this->flash('Tables created successfully', 'success','tables_created');
                     } else {
@@ -220,19 +225,32 @@ class AppController extends Controller
     #[NoReturn]
     public function create()
     {
+        $categories = new CategoryRepository();
         if (isset($_SESSION['author']))
         {
+            $post = new Post();
             if (isset($_POST['postIt']))
             {
                 foreach ($_POST as $key => $value) {
                     switch ($key) {
-
+                        case 'postTitle':
+                            $post->setTitle($value);
+                            break;
+                        case 'postContent':
+                            $post->setContent($value);
+                            break;
+                        case 'postSlug':
+                            $post->setSlug($value);
+                            break;
+                        case 'postCategory':
+                            $post->setCategory($value);
+                            break;
                     }
                 }
 
             }
 
-            $this->display('create.tpl');
+            $this->display('create.tpl', ['categories' => $categories->getAll()]);
         }
         else
         {

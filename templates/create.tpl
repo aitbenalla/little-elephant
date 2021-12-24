@@ -24,24 +24,24 @@
                     <div class="mb-3">
                         <label for="postTitle" class="form-label">Title</label>
                         <input type="text" class="form-control" id="postTitle" name="postTitle"
-                               placeholder="Example input placeholder">
+                               placeholder="Example input placeholder" required>
                     </div>
                 </div>
 
                 <div class="col-12">
                     <label for="postCategories" class="form-label">Categories</label>
-                    <select class="form-select" id="postCategories" name="postCategories">
+                    <select class="form-select" id="postCategories" name="postCategories" required>
                         <option selected>Choose...</option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
+                        {foreach from=$categories item=category}
+                            <option value="{$category->getId()}">{$category->getName()|capitalize}</option>
+                        {/foreach}
                     </select>
                 </div>
 
                 <div class="col-12">
                     <div class="mb-3">
                         <label for="postContent" class="form-label">Content</label>
-                        <textarea id="postContent" name="postContent"></textarea>
+                        <textarea id="postContent" name="postContent" required></textarea>
                     </div>
                 </div>
 
