@@ -84,7 +84,7 @@ class Database
     {
         try {
 
-            $sql = "CREATE TABLE `author` (
+            $sql = "CREATE TABLE IF NOT EXISTS `author` (
         `id` INT(11) AUTO_INCREMENT PRIMARY KEY,
         `full_name` VARCHAR(60),
         `birth_date` DATE NOT NULL,
@@ -113,7 +113,7 @@ class Database
     {
         try {
 
-            $sql = "CREATE TABLE `category` (
+            $sql = "CREATE TABLE IF NOT EXISTS `category` (
         `id` INT(11) AUTO_INCREMENT PRIMARY KEY,
         `name` VARCHAR(100) NOT NULL,
         `slug` LONGTEXT NOT NULL
@@ -131,15 +131,20 @@ class Database
     {
         try {
 
-            $sql = "CREATE TABLE `post` (
+            $sql = "CREATE TABLE IF NOT EXISTS `post` (
         `id` INT(11) AUTO_INCREMENT PRIMARY KEY,
         `title` VARCHAR(180) NOT NULL,
         `content` LONGTEXT NOT NULL,
         `slug` LONGTEXT NOT NULL,
+        `status` BOOL NOT NULL,
+        `like_count` INT(11),
+        `dislike_count` INT(11),
+        `tags` JSON,
         `updated_at` DATETIME,
         `created_at` DATETIME NOT NULL,
         author_id INT NOT NULL,
         category_id INT NOT NULL,
+        CHECK (JSON_VALID(tags)),
         FOREIGN KEY (author_id) REFERENCES author(id),
         FOREIGN KEY (category_id) REFERENCES category(id)
       )ENGINE=InnoDB;";
@@ -158,7 +163,7 @@ class Database
     {
         try {
 
-            $sql = "CREATE TABLE `media_author` (
+            $sql = "CREATE TABLE IF NOT EXISTS `media_author` (
         `id` INT(11) AUTO_INCREMENT PRIMARY KEY,
         `type` VARCHAR(25) NOT NULL,
         `name` LONGBLOB NOT NULL,
@@ -181,7 +186,7 @@ class Database
     {
         try {
 
-            $sql = "CREATE TABLE `media_post` (
+            $sql = "CREATE TABLE IF NOT EXISTS `media_post` (
         `id` INT(11) AUTO_INCREMENT PRIMARY KEY,
         `type` VARCHAR(25) NOT NULL,
         `name` LONGBLOB NOT NULL,
@@ -203,7 +208,7 @@ class Database
     public function createTableManager(): bool|string
     {
         try {
-            $sql = "CREATE TABLE `manager` (
+            $sql = "CREATE TABLE IF NOT EXISTS `manager` (
         `id` INT(11) AUTO_INCREMENT PRIMARY KEY,
         `full_name` VARCHAR(60),
         `email` VARCHAR(180) NOT NULL UNIQUE,

@@ -5,7 +5,7 @@
 
     <h1 class="fw-bold h2">{$title}</h1>
 
-    <div class="row p-3">
+    <div class="row py-4">
         <div class="col-lg-12">
             <form class="row g-3" method="POST" action="/register" enctype="multipart/form-data">
                 <div class="col-md-6">

@@ -229,6 +229,7 @@ class AppController extends Controller
         if (isset($_SESSION['author']))
         {
             $post = new Post();
+
             if (isset($_POST['postIt']))
             {
                 foreach ($_POST as $key => $value) {
@@ -242,8 +243,18 @@ class AppController extends Controller
                         case 'postSlug':
                             $post->setSlug($value);
                             break;
+                        case 'postStatus':
+                            if ($value)
+                            {
+                                $post->setStatus(1);
+                            }
+                            break;
                         case 'postCategory':
                             $post->setCategory($value);
+                            break;
+                        case 'postTags':
+                            $tags = explode(',',$value);
+                            $post->setTags(json_encode($tags));
                             break;
                     }
                 }

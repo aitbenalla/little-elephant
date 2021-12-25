@@ -96,7 +96,7 @@ class AuthorRepository extends Database
 
             if ($author->getId()) {
                 $stmt->bindValue(":id", $author->getId());
-                $stmt->bindValue(":updated_at", $author->getUpdatedAt());
+                $stmt->bindValue(":updated_at", $author->getUpdatedAt()->format('Y-m-d H:i:s'));
             }
             $stmt->bindValue(":full_name", $author->getFullName());
             $stmt->bindValue(":birth_date", $author->getBirthDate());

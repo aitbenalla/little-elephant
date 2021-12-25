@@ -10,7 +10,11 @@ class Post
     private string $title;
     private string $content;
     private string $slug;
+    private bool $status;
     private int $category;
+    private int $like_count;
+    private int $dislike_count;
+    private string $tags;
     private DateTime $created_at;
     private DateTime $updated_at;
     private int $author;
@@ -85,6 +89,22 @@ class Post
     }
 
     /**
+     * @return bool
+     */
+    public function isStatus(): bool
+    {
+        return $this->status;
+    }
+
+    /**
+     * @param bool $status
+     */
+    public function setStatus(bool $status): void
+    {
+        $this->status = $status;
+    }
+
+    /**
      * @return int
      */
     public function getCategory(): int
@@ -98,6 +118,54 @@ class Post
     public function setCategory(int $category): void
     {
         $this->category = $category;
+    }
+
+    /**
+     * @return int
+     */
+    public function getLikeCount(): int
+    {
+        return $this->like_count;
+    }
+
+    /**
+     * @param int $like_count
+     */
+    public function setLikeCount(int $like_count): void
+    {
+        $this->like_count = $like_count;
+    }
+
+    /**
+     * @return int
+     */
+    public function getDislikeCount(): int
+    {
+        return $this->dislike_count;
+    }
+
+    /**
+     * @param int $dislike_count
+     */
+    public function setDislikeCount(int $dislike_count): void
+    {
+        $this->dislike_count = $dislike_count;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTags(): string
+    {
+        return $this->tags;
+    }
+
+    /**
+     * @param string $tags
+     */
+    public function setTags(string $tags): void
+    {
+        $this->tags = $tags;
     }
 
     /**
