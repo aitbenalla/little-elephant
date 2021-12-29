@@ -3,7 +3,7 @@
 namespace App\Entity;
 
 use DateTime;
-
+use DateTimeZone;
 class Post
 {
     private ?int $id = null;
@@ -12,16 +12,18 @@ class Post
     private string $slug;
     private bool $status;
     private int $category;
-    private int $like_count;
-    private int $dislike_count;
-    private string $tags;
-    private DateTime $created_at;
-    private DateTime $updated_at;
+    private ?int $like_count;
+    private ?int $dislike_count;
+    private ?string $tags;
+    private ?DateTime $created_at;
+    private ?DateTime $updated_at;
     private int $author;
 
     public function __construct()
     {
-        $this->created_at = new DateTime('NOW');
+        $datetime = new DateTime('NOW');
+        $datetime->setTimezone(new DateTimeZone('Africa/Casablanca'));
+        $this->created_at = $datetime;
     }
 
     /**
@@ -169,33 +171,33 @@ class Post
     }
 
     /**
-     * @return DateTime
+     * @return DateTime|null
      */
-    public function getCreatedAt(): DateTime
+    public function getCreatedAt(): ?DateTime
     {
         return $this->created_at;
     }
 
     /**
-     * @param DateTime $created_at
+     * @param DateTime|null $created_at
      */
-    public function setCreatedAt(DateTime $created_at): void
+    public function setCreatedAt(?DateTime $created_at): void
     {
         $this->created_at = $created_at;
     }
 
     /**
-     * @return DateTime
+     * @return DateTime|null
      */
-    public function getUpdatedAt(): DateTime
+    public function getUpdatedAt(): ?DateTime
     {
         return $this->updated_at;
     }
 
     /**
-     * @param DateTime $updated_at
+     * @param DateTime|null $updated_at
      */
-    public function setUpdatedAt(DateTime $updated_at): void
+    public function setUpdatedAt(?DateTime $updated_at): void
     {
         $this->updated_at = $updated_at;
     }

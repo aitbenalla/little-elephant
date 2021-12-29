@@ -1,4 +1,4 @@
-{extends file="base.tpl"}
+{extends file="app/base.tpl"}
 {$title = $smarty.session.author->getUsername()|capitalize}
 
 {block name="content"}

@@ -1,94 +1,60 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Admin;
 
+use App\Controller\Controller;
 use App\Entity\Author;
 use App\Entity\MediaAuthor;
-use App\Entity\Post;
 use App\Model\AuthorRepository;
-use App\Model\CategoryRepository;
 use App\Model\MediaAuthorRepository;
-use JetBrains\PhpStorm\NoReturn;
 use SmartyException;
-class AppController extends Controller
+
+class AuthorController extends Controller
 {
+    public function __construct()
+    {
+        parent::__construct();
+
+        if (!isset($_SESSION['manager']))
+        {
+            header("Refresh:0; url=/admin/login");
+            exit();
+        }
+    }
+
     /**
      * @throws SmartyException
      */
-    public function index()
+    public function list()
     {
-        if (isset($_POST['db_execute']) && !empty($_POST['db_execute'])) {
-            if (is_object($this->getDB()->getServer())) {
+        $repository = new AuthorRepository();
 
-                if ($_POST['db_execute'] === '1') {
-                    $this->flash('Server Connected', 'success','s_success');
-                }
-                if ($_POST['db_execute'] === '2') {
-                    $creating = $this->getDB()->createDatabase();
+        $this->display('admin/author/list.tpl', ['authors' => $repository->getAll()]);
+    }
 
-                    if ($creating === true) {
-                        $this->flash('Database created successfully', 'success','db_created');
-                    } else {
-                        $this->flash($creating, 'danger', 'db_error');
-                    }
-                }
-                if ($_POST['db_execute'] === '3' && is_object($this->getDB()->getConnection())) {
-                    $author = $this->getDB()->createTableAuthor();
-                    $mediaAuthor = $this->getDB()->createTableMediaAuthor();
-                    $post = $this->getDB()->createTablePost();
-                    $mediaPost = $this->getDB()->createTableMediaPost();
-                    $manager = $this->getDB()->createTableManager();
-                    $category = $this->getDB()->createTableCategory();
+    /**
+     * @throws SmartyException
+     */
+    public function save($id = null)
+    {
+        $repository = new AuthorRepository();
 
-                    if (
-                        $author === true
-                        && $mediaAuthor === true
-                        && $post === true
-                        && $mediaPost === true
-                        && $manager === true
-                        && $category === true
-                    ) {
-                        $this->flash('Tables created successfully', 'success','tables_created');
-                    } else {
-                        $this->flash('Tables cannot be created or all ready created', 'danger', 'tables_error');
-                    }
-                } else if ($_POST['db_execute'] === '3' && !is_object($this->getDB()->getConnection())) {
-                    $this->flash($this->getDB()->getConnection(), 'danger', 'c_error');
-                }
-            } else {
-                $this->flash($this->getDB()->getServer(), 'danger', 's_error');
+        if (!$id) {
+            $author = new Author();
+        } else {
+
+            $author = $repository->getOneById($id);
+
+            if ($author) {
+                $this->assign('author', $author);
+            }
+            else
+            {
+                $this->flash('Author not found.', 'danger', 'au_not_found');
+                header("Refresh:0; url=/admin/authors");
+                exit();
             }
         }
-
-        $this->display('home.tpl');
-    }
-
-    /**
-     * @throws SmartyException
-     */
-    public function authors()
-    {
-        $repository = new AuthorRepository();
-
-        $this->display('authors.tpl', ['authors' => $repository->getAll()]);
-    }
-
-    /**
-     * @throws SmartyException
-     */
-    public function posts()
-    {
-        $this->display('posts.tpl');
-    }
-
-    /**
-     * @throws SmartyException
-     */
-    public function register($id = null)
-    {
-        $repository = new AuthorRepository();
-
-        $author = new Author();
 
         if (isset($_POST['save'])) {
 
@@ -194,85 +160,20 @@ class AppController extends Controller
             }
         }
 
-        $this->display('register.tpl');
+        $this->display('admin/author/form.tpl');
     }
 
-    /**
-     * @throws SmartyException
-     */
-    #[NoReturn]
-    public function profile($username)
+    public function deleteAuthor(int $id)
     {
         $repository = new AuthorRepository();
-        $profile = $repository->getOneByUsername($username);
 
-        if (is_object($profile))
-        {
-            $this->display('profile.tpl', ['profile'=>$profile]);
+        $delete = $repository->delete($id);
+
+        if ($delete) {
+
+            $this->flash('Author Deleted', 'danger');
+
+            header("Refresh:0; url=/authors");
         }
-        else
-        {
-            $this->flash('Profile not found', 'danger', 'profile_not_found');
-            header("Refresh:0; url=/");
-            exit;
-        }
-
-    }
-
-    /**
-     * @throws SmartyException
-     */
-    #[NoReturn]
-    public function create()
-    {
-        $categories = new CategoryRepository();
-        if (isset($_SESSION['author']))
-        {
-            $post = new Post();
-
-            if (isset($_POST['postIt']))
-            {
-                foreach ($_POST as $key => $value) {
-                    switch ($key) {
-                        case 'postTitle':
-                            $post->setTitle($value);
-                            break;
-                        case 'postContent':
-                            $post->setContent($value);
-                            break;
-                        case 'postSlug':
-                            $post->setSlug($value);
-                            break;
-                        case 'postStatus':
-                            if ($value)
-                            {
-                                $post->setStatus(1);
-                            }
-                            break;
-                        case 'postCategory':
-                            $post->setCategory($value);
-                            break;
-                        case 'postTags':
-                            $tags = explode(',',$value);
-                            $post->setTags(json_encode($tags));
-                            break;
-                    }
-                }
-
-            }
-
-            $this->display('create.tpl', ['categories' => $categories->getAll()]);
-        }
-        else
-        {
-            header("Refresh:0; url=/login");
-            exit;
-        }
-
-    }
-
-    public function error()
-    {
-        echo '404';
     }
 }

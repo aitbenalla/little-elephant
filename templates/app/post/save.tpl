@@ -1,4 +1,4 @@
-{extends file="base.tpl"}
+{extends file="app/base.tpl"}
 {$title = 'Create New Post'}
 
 {block name="stylesheets"}

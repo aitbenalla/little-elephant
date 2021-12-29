@@ -1,4 +1,4 @@
-{extends file="base.tpl"}
+{extends file="app/base.tpl"}
 {$title = 'Home'}
 {block name="content"}
   <div class="text-center py-5 mb-5">

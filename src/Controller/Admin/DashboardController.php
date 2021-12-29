@@ -1,12 +1,10 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Admin;
 
-use App\Entity\Manager;
-use App\Model\ManagerRepository;
+use App\Controller\Controller;
 use SmartyException;
-
-class AdminController extends Controller
+class DashboardController extends Controller
 {
     public function __construct()
     {

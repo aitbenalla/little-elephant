@@ -39,7 +39,7 @@ class SecurityController extends Controller
 
             }
             $this->assign('action','/admin/login');
-            $this->display('security/login.tpl');
+            $this->display('admin/security/login.tpl');
         }
         else {
             header("Refresh:0; url=/admin");
@@ -78,7 +78,7 @@ class SecurityController extends Controller
                 }
             }
             $this->assign('action','/login');
-            $this->display('security/login.tpl');
+            $this->display('app/security/login.tpl');
         }
         else {
             header("Refresh:0; url=/");

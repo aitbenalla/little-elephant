@@ -1,4 +1,4 @@
-{extends file="base.tpl"}
+{extends file="app/base.tpl"}
 {$title = 'Authors'}
 {block name="content"}
     <h1 class="fw-bold h2">Authors:</h1>

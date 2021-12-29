@@ -1,58 +1,33 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\App;
 
-use App\Entity\MediaAuthor;
+use App\Controller\Controller;
 use App\Entity\Author;
+use App\Entity\MediaAuthor;
 use App\Model\AuthorRepository;
 use App\Model\MediaAuthorRepository;
+use JetBrains\PhpStorm\NoReturn;
 use SmartyException;
 class AuthorController extends Controller
 {
-    public function __construct()
+    /**
+     * @throws SmartyException
+     */
+    public function show()
     {
-        parent::__construct();
-
-        if (!isset($_SESSION['manager']))
-        {
-            header("Refresh:0; url=/admin/login");
-            exit();
-        }
+        $repository = new AuthorRepository();
+        $this->display('app/author/show.tpl', ['authors' => $repository->getAll()]);
     }
 
     /**
      * @throws SmartyException
      */
-    public function list()
+    public function register($id = null)
     {
         $repository = new AuthorRepository();
 
-        $this->display('admin/author/list.tpl', ['authors' => $repository->getAll()]);
-    }
-
-    /**
-     * @throws SmartyException
-     */
-    public function save($id = null)
-    {
-        $repository = new AuthorRepository();
-
-        if (!$id) {
-            $author = new Author();
-        } else {
-
-            $author = $repository->getOneById($id);
-
-            if ($author) {
-                $this->assign('author', $author);
-            }
-            else
-            {
-                $this->flash('Author not found.', 'danger', 'au_not_found');
-                header("Refresh:0; url=/admin/authors");
-                exit();
-            }
-        }
+        $author = new Author();
 
         if (isset($_POST['save'])) {
 
@@ -154,24 +129,32 @@ class AuthorController extends Controller
 
             if ($result) {
 
-                $this->flash('Saved. <a href="/authors">Go To List</a>', 'success', 'au_saved');
+                $this->flash('Saved. <a href="app/author/show">Go To List</a>', 'success', 'au_saved');
             }
         }
 
-        $this->display('admin/author/form.tpl');
+        $this->display('app/author/register.tpl');
     }
 
-    public function deleteAuthor(int $id)
+    /**
+     * @throws SmartyException
+     */
+    #[NoReturn]
+    public function profile($username)
     {
         $repository = new AuthorRepository();
+        $profile = $repository->getOneByUsername($username);
 
-        $delete = $repository->delete($id);
-
-        if ($delete) {
-
-            $this->flash('Author Deleted', 'danger');
-
-            header("Refresh:0; url=/authors");
+        if (is_object($profile))
+        {
+            $this->display('app/author/profile.tpl', ['profile'=>$profile]);
         }
+        else
+        {
+            $this->flash('Profile not found', 'danger', 'profile_not_found');
+            header("Refresh:0; url=/");
+            exit;
+        }
+
     }
 }

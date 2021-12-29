@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\App;
 
+use App\Controller\Controller;
 use JetBrains\PhpStorm\NoReturn;
 use SmartyException;
 
@@ -26,7 +27,7 @@ class ProfileController extends Controller
     {
         if (isset($_SESSION['author']))
         {
-            $this->display('profile/dashboard.tpl');
+            $this->display('app/profile/dashboard.tpl');
         }
         else
         {

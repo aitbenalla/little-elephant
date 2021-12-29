@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Admin;
 
+use App\Controller\Controller;
 use App\Entity\Manager;
 use App\Model\ManagerRepository;
 use SmartyException;

@@ -6,23 +6,36 @@ use App\Router\Router;
 
 $router = new Router($_GET['url']);
 
-$router->any('/' , 'App#index');
-$router->get('/authors' , 'App#authors');
-$router->get('/posts' , 'App#posts');
-$router->any('/register' , 'App#register');
+// ##### App Section ##### //
+# Home Controller
+$router->any('/' , 'Home#index#App');
+# Author Controller
+$router->get('/authors' , 'Author#show#App');
+$router->any('/register' , 'Author#register#App');
+$router->get('/profile/:username' , 'Author#profile#App');
+# Post Controller
+$router->get('/posts' , 'Post#show#App');
+$router->any('/post/new' , 'Post#save#App');
+# Security Controller
 $router->any('/login' , 'Security#loginAuthor');
 $router->get('/logout' , 'Security#logoutAuthor');
-$router->get('/profile/:username' , 'App#profile');
-$router->any('/me' , 'Profile#dashboard');
-$router->any('/create' , 'App#create');
-$router->get('/admin' , 'Admin#dashboard');
-$router->get('/admin/dashboard' , 'Admin#dashboard');
-$router->get('/admin/authors' , 'Author#list');
-$router->any('/admin/author/new' , 'Author#save');
-$router->get('/admin/posts' , 'Post#list');
-$router->any('/admin/post/new' , 'Post#save');
-$router->get('/admin/managers' , 'Manager#list');
-$router->any('/admin/manager/new' , 'Manager#save');
+# Profile Controller
+$router->any('/me' , 'Profile#dashboard#App');
+
+// ##### Admin Section ##### //
+# Dashboard Controller
+$router->get('/admin' , 'Dashboard#dashboard#Admin');
+$router->get('/admin/dashboard' , 'Dashboard#dashboard#Admin');
+# Author Controller
+$router->get('/admin/authors' , 'Author#list#Admin');
+$router->any('/admin/author/new' , 'Author#save#Admin');
+# Post Controller
+$router->get('/admin/posts' , 'Post#list#Admin');
+$router->any('/admin/post/new' , 'Post#save#Admin');
+# Manager Controller
+$router->get('/admin/managers' , 'Manager#list#Admin');
+$router->any('/admin/manager/new' , 'Manager#save#Admin');
+# Security Controller
 $router->any('/admin/login' , 'Security#loginAdmin');
 $router->get('/admin/logout' , 'Security#logoutAdmin');
 
