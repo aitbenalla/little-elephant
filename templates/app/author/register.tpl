@@ -13,32 +13,25 @@
                     <input type="file" name="photo" class="form-control" id="inputPhoto">
                 </div>
                 <div class="col-md-6">
-                    <label for="inputFullName" class="form-label">Full Name</label>
-                    <input type="text" name="full_name" class="form-control" id="inputFullName">
+                    {$form->full_name}
                 </div>
                 <div class="col-md-6">
-                    <label for="inputUsername" class="form-label">Username</label>
-                    <input type="text" name="username" class="form-control" id="inputUsername" required>
+                    {$form->username}
                 </div>
                 <div class="col-md-6">
-                    <label for="inputBirthDate" class="form-label">Birth Date</label>
-                    <input type="date" name="birth_date" class="form-control" id="inputBirthDate" required>
+                    {$form->birth_date}
                 </div>
                 <div class="col-md-6">
-                    <label for="inputEmail" class="form-label">Email</label>
-                    <input type="email" name="email" class="form-control" id="inputEmail" required>
+                    {$form->email}
                 </div>
                 <div class="col-md-6">
-                    <label for="inputPhone" class="form-label">Phone</label>
-                    <input type="tel" name="phone" class="form-control" id="inputPhone">
+                    {$form->phone}
                 </div>
                 <div class="col-md-6">
-                    <label for="inputPassword" class="form-label">Password</label>
-                    <input type="password" name="password" class="form-control" id="inputPassword" required>
+                    {$form->password}
                 </div>
                 <div class="col-md-6">
-                    <label for="inputPasswordRepeat" class="form-label">Repeat Password</label>
-                    <input type="password" name="password_repeat" class="form-control" id="inputPasswordRepeat" required>
+                    {$form->password_repeat}
                 </div>
                 <div class="col-12">
                     <label for="inputAddress" class="form-label">Address</label>
