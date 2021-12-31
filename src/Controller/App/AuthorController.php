@@ -30,8 +30,6 @@ class AuthorController extends Controller
         $form = new AuthorType();
         $author = new Author();
 
-        var_dump($form->buildForm());
-
         if (isset($_POST['save'])) {
 
             $result = $repository->flush($author);
