@@ -2,30 +2,154 @@
 
 namespace App\Form;
 
+use App\Controller\flash;
+use App\Entity\Author;
 use DOMException;
 use stdClass;
 class AuthorType extends FormType
 {
+    use flash;
+    const email_pattern = "/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,})$/i";
+    const username_pattern = "/^[a-zA-Z0-9]{5,}$/";
+    const pass_pattern = "/^.{8,}$/";
+    const phone_pattern = "/^[0-9]{10}+$/";
+    const full_name_pattern = "/^([a-zA-Z' ]+)$/";
+
     /**
      * @throws DOMException
      */
     public function buildForm(): stdClass
     {
         $builder = new stdClass();
+        $media = new MediaAuthorType();
 
-        $builder->photo = $this->add('file','photo', ['class'=>'form-control', 'label'=>'Photo:']);
+        $builder->photo = $media->buildForm()->name;
         $builder->full_name = $this->add('text','full_name', ['class'=>'form-control', 'required'=>true, 'label'=>'Full Name:']);
         $builder->username = $this->add('text','username', ['class'=>'form-control', 'required'=>true, 'label'=>'Username:']);
-        $builder->birth_date = $this->add('text','birth_date', ['class'=>'form-control', 'required'=>true, 'label'=>'Birth Date:']);
+        $builder->birth_date = $this->add('date','birth_date', ['class'=>'form-control', 'required'=>true, 'label'=>'Birth Date:']);
         $builder->email = $this->add('text','email', ['class'=>'form-control', 'required'=>true, 'label'=>'Email:']);
         $builder->phone = $this->add('tel','phone', ['class'=>'form-control', 'required'=>true, 'label'=>'Phone:']);
-        $builder->password = $this->add('text','password', ['class'=>'form-control', 'required'=>true, 'label'=>'Password:']);
-        $builder->password_repeat = $this->add('text','password_repeat', ['class'=>'form-control', 'required'=>true, 'label'=>'Repeat Password:']);
+        $builder->password = $this->add('password','password', ['class'=>'form-control', 'required'=>true, 'label'=>'Password:']);
+        $builder->password_repeat = $this->add('password','password_repeat', ['class'=>'form-control', 'required'=>true, 'label'=>'Repeat Password:']);
         $builder->address = $this->add('text','address', ['class'=>'form-control', 'placeholder'=>'1234 Main St', 'label'=>'Address:']);
         $builder->city = $this->add('text','city', ['class'=>'form-control', 'label'=>'City:']);
         $builder->country = $this->add('select','country', ['class'=>'form-select','data'=>$this->getData(), 'label'=>'Country:']);
 
         return $builder;
+    }
+
+    public function submit($data): Author
+    {
+        $author = new Author();
+
+        foreach ($data as $key => $value) {
+            switch ($key) {
+                case 'full_name':
+                    if (preg_match(self::full_name_pattern, $value)) {
+                        $author->setFullName($value);
+                    } else {
+                        $this->message('Invalid name given.', 'danger', 'fl_error');
+                        header("Refresh:0");
+                        exit;
+                    }
+                    break;
+                case 'birth_date':
+                    if ($this->validateAge($value)) {
+                        $author->setBirthDate($value);
+                    } else {
+                        $this->message('You Must be 18 or Older.', 'danger', 'bd_error');
+                        header("Refresh:0");
+                        exit;
+                    }
+                    break;
+                case 'username':
+                    if (preg_match(self::username_pattern, $value)) {
+                        $author->setUsername($value);
+                    } else {
+                        $this->message('Invalid username.', 'danger', 'us_error');
+                        header("Refresh:0");
+                        exit;
+                    }
+                    break;
+                case 'phone':
+                    if (preg_match(self::phone_pattern, $value)) {
+                        $author->setPhone(trim($value));
+                    } else {
+                        $this->message('Invalid phone number.', 'danger', 'ph_error');
+                        header("Refresh:0");
+                        exit;
+                    }
+                    break;
+                case 'email':
+                    // filter_var($value, FILTER_VALIDATE_EMAIL)
+                    if (preg_match(self::email_pattern, $value)) {
+                        $author->setEmail(trim($value));
+                    } else {
+                        $this->message('Invalid Email address.', 'danger', 'email_error');
+                        header("Refresh:0");
+                        exit;
+                    }
+                    break;
+                case 'password':
+                    if (preg_match(self::pass_pattern, $value)) {
+                        if ($value === $_POST['password_repeat']) {
+                            $author->setPassword($this->hashThePass($value));
+                        } else {
+                            $this->message('Passwords not match.', 'danger', 'ps_error');
+                            header("Refresh:0");
+                            exit;
+                        }
+                    } else {
+                        $this->message('Password not strong enough / Password too short.', 'danger', 'ps_error2');
+                        header("Refresh:0");
+                        exit;
+                    }
+                    break;
+                case 'address':
+                    $author->setAddress($value);
+                    break;
+                case 'city':
+                    $author->setCity(trim($value));
+                    break;
+                case 'country':
+                    $author->setCountry(trim($value));
+                    break;
+                case 'zip':
+                    $author->setZip(trim($value));
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        return $author;
+    }
+
+    private function validateAge($date): bool
+    {
+        $age = 18;
+        $birthday = date("d-m-Y", strtotime($date));
+
+        // $birthday can be UNIX_TIMESTAMP or just a string-date.
+        if (is_string($birthday)) {
+            $birthday = strtotime($birthday);
+        }
+
+        // check
+        // 31536000 is the number of seconds in a 365 days year.
+        if (time() - $birthday < $age * 31536000) {
+            return false;
+        }
+
+        return true;
+    }
+
+    private function hashThePass($pass): string
+    {
+        $options = [
+            'cost' => 12,
+        ];
+        return password_hash($pass, PASSWORD_BCRYPT, $options);
     }
 
     private function getData(): array

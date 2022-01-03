@@ -27,39 +27,48 @@ class PostRepository extends Database
 
     }
 
-    public function persist(Array $data): Post
+    public function getByAuthor($author): bool|array|string
     {
-        $post = new Post();
-        $post->setAuthor($_SESSION['author']->getId());
+        try {
+            $conn = $this->getConnection();
+            $stmt = $conn->prepare('SELECT post.id,post.title,post.status,DATE(post.created_at),DATE(post.updated_at),
+                    category.name as category_name, category.slug as category_slug
+                    FROM post
+                    LEFT JOIN category ON post.category_id = category.id WHERE author_id=?
+                    ');
 
-        foreach ($data as $key => $value) {
-            switch ($key) {
-                case 'postTitle':
-                    $post->setTitle($value);
-                    break;
-                case 'postContent':
-                    $post->setContent($value);
-                    break;
-                case 'postSlug':
-                    $post->setSlug($value);
-                    break;
-                case 'postStatus':
-                    if ($value)
-                    {
-                        $post->setStatus(1);
-                    }
-                    break;
-                case 'postCategories':
-                    $post->setCategory($value);
-                    break;
-                case 'postTags':
-                    $tags = explode(',',$value);
-                    $post->setTags(json_encode($tags));
-                    break;
-            }
+            $stmt->execute([$author]);
+            $stmt->setFetchMode(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, Post::class);
+
+            return $stmt->fetchAll();
         }
+        catch (PDOException $th)
+        {
+            return $th->getMessage();
+        }
+    }
 
-        return $post;
+    public function getById($id)
+    {
+        try {
+            $conn = $this->getConnection();
+            $stmt = $conn->prepare('SELECT post.id,post.title,post.slug,post.content,post.status,DATE(post.created_at),post.tags,
+                    media_post.name as media_name, media_post.type as media_type,
+                    author.username as author_username, category.name as category_name, category.slug as category_slug, category.id as category_id
+                    FROM post
+                    LEFT JOIN media_post ON post.id = media_post.post_id
+                    LEFT JOIN author ON post.author_id = author.id
+                    LEFT JOIN category ON post.category_id = category.id WHERE post.id = ? LIMIT 1
+                    ');
+            $stmt->execute([$id]);
+            $stmt->setFetchMode(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, Post::class);
+
+            return $stmt->fetch();
+        }
+        catch (PDOException $th)
+        {
+            return $th->getMessage();
+        }
 
     }
 

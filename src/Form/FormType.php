@@ -11,13 +11,13 @@ class FormType
      */
     public function add(string $type,string $name, $options = []): bool|string
     {
-        return $this->create($type, $name, $options)->saveHTML();
+        return $this->createElement($type, $name, $options)->saveHTML();
     }
 
     /**
      * @throws DOMException
      */
-    public function create(string $type, string $name, array $options): DOMDocument | bool
+    public function createElement(string $type, string $name, array $options): DOMDocument | bool
     {
         $dom = new DOMDocument('1.0');
 
@@ -35,13 +35,55 @@ class FormType
                 $element = $dom->createElement('input');
                 $this->createAttr($dom, $element, 'type', 'tel');
                 break;
+            case 'date':
+                $element = $dom->createElement('input');
+                $this->createAttr($dom, $element, 'type', 'date');
+                break;
+            case 'password':
+                $element = $dom->createElement('input');
+                $this->createAttr($dom, $element, 'type', 'password');
+                break;
             case 'select':
                 $element = $dom->createElement('select');
-                foreach ($options['data'] as $val)
+                if (array_key_exists('data',$options))
                 {
-                    $option = $dom->createElement('option', $val);
-                    $this->createAttr($dom, $option, 'value', $val);
-                    $element->appendChild($option);
+                    foreach ($options['data'] as $val)
+                    {
+                        $option = $dom->createElement('option', $val);
+                        $this->createAttr($dom, $option, 'value', $val);
+                        $element->appendChild($option);
+                    }
+                }
+                if (array_key_exists('entity',$options))
+                {
+                    foreach ($options['entity'] as $key => $val)
+                    {
+                        if ($key === 'category')
+                        {
+                            foreach ($val as $entity)
+                            {
+                                $option = $dom->createElement('option', $entity->getName());
+                                $this->createAttr($dom, $option, 'value', $entity->getId());
+
+                                if (array_key_exists('entity-value',$options))
+                                {
+                                    if ($options['entity-value'] === $entity->getId())
+                                    {
+                                        $this->createAttr($dom, $option, 'selected');
+                                    }
+
+                                }
+                                $element->appendChild($option);
+                            }
+                        }
+                    }
+                }
+                break;
+            case 'textarea':
+                $element = $dom->createElement('textarea');
+                if (array_key_exists('textarea-value',$options))
+                {
+                    $element = $dom->createElement('textarea', $options['textarea-value']);
                 }
                 break;
         }
@@ -68,6 +110,9 @@ class FormType
                             break;
                         case 'label':
                             $this->createLabel($dom, $val,$name);
+                            break;
+                        case 'value':
+                            $this->createAttr($dom, $element, 'value', $val);
                             break;
 
                     }

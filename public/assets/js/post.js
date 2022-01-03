@@ -1,9 +1,9 @@
 $(function (){
 
-    $('#postContent').summernote({
+    $('#content').summernote({
         height: 300
     });
-    var inputTags = document.querySelector("#postTags");
+    var inputTags = document.querySelector("#tags");
 
    let tagify = new Tagify(inputTags, {
         originalInputValueFormat: valuesArr => valuesArr.map(item => item.value).join(',')

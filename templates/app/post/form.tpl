@@ -16,61 +16,49 @@
     <h1 class="fw-bold h2">{$title}:</h1>
     <div class="row py-4">
         <div class="col-lg-12">
-            <form class="row row-cols-lg-auto g-3 align-items-center" method="post" action="/create"
+            <form class="row row-cols-lg-auto g-3 align-items-center" method="post" action="/post/new"
                   enctype="multipart/form-data">
                 <div class="col-12">
                     <div class="mb-3">
-                        <label for="postCover" class="form-label">Cover:</label>
-                        <input type="file" name="postCover" class="form-control" id="postCover">
+                        {$form->cover}
                     </div>
                 </div>
 
                 <div class="col-6">
                     <div class="mb-3">
-                        <label for="postTitle" class="form-label">Title:</label>
-                        <input type="text" class="form-control" id="postTitle" name="postTitle"
-                               placeholder="Post Title" required>
+                        {$form->title}
                     </div>
                 </div>
 
                 <div class="col-6">
                     <div class="mb-3">
-                        <label for="postSlug" class="form-label">Slug:</label>
-                        <input type="text" class="form-control" id="postSlug" name="postSlug"
-                               placeholder="Post URL" required>
-                    </div>
-                </div>
-
-                <div class="col-12">
-                    <label for="postCategories" class="form-label">Categories:</label>
-                    <select class="form-select" id="postCategories" name="postCategories" required>
-                        <option selected>Choose...</option>
-                        {foreach from=$categories item=category}
-                            <option value="{$category->getId()}">{$category->getName()|capitalize}</option>
-                        {/foreach}
-                    </select>
-                </div>
-
-                <div class="col-12">
-                    <div class="mb-3">
-                        <label for="postContent" class="form-label">Content</label>
-                        <textarea class="form-control" id="postContent" name="postContent" required></textarea>
+                        {$form->slug}
                     </div>
                 </div>
 
                 <div class="col-12">
                     <div class="mb-3">
-                        <label for="postTags" class="form-label">Tags:</label>
-                        <input type="text" class="form-control" id="postTags" name="postTags"
-                               placeholder="Add tags">
+                        {$form->categories}
+                    </div>
+                </div>
+
+                <div class="col-12">
+                    <div class="mb-3">
+                        {$form->content}
+                    </div>
+                </div>
+
+                <div class="col-12">
+                    <div class="mb-3">
+                        {$form->tags}
                     </div>
                 </div>
 
                 <div class="col-6">
                     <div class="mb-3">
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="postStatus" name="postStatus" checked>
-                            <label class="form-check-label" for="postStatus">
+                            <input class="form-check-input" type="checkbox" id="status" name="status" checked>
+                            <label class="form-check-label" for="status">
                                 Publish
                             </label>
                         </div>

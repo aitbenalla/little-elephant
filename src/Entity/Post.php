@@ -16,7 +16,7 @@ class Post
     private ?int $dislike_count;
     private ?string $tags;
     private ?DateTime $created_at;
-    private ?DateTime $updated_at;
+    private ?DateTime $updated_at = null;
     private int $author;
 
     public function __construct()

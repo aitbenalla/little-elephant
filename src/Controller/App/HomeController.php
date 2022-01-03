@@ -3,9 +3,12 @@
 namespace App\Controller\App;
 
 use App\Controller\Controller;
+use App\Controller\flash;
 use SmartyException;
+
 class HomeController extends Controller
 {
+    use flash;
     /**
      * @throws SmartyException
      */
@@ -15,15 +18,15 @@ class HomeController extends Controller
             if (is_object($this->getDB()->getServer())) {
 
                 if ($_POST['db_execute'] === '1') {
-                    $this->flash('Server Connected', 'success','s_success');
+                    $this->message('Server Connected', 'success','s_success');
                 }
                 if ($_POST['db_execute'] === '2') {
                     $creating = $this->getDB()->createDatabase();
 
                     if ($creating === true) {
-                        $this->flash('Database created successfully', 'success','db_created');
+                        $this->message('Database created successfully', 'success','db_created');
                     } else {
-                        $this->flash($creating, 'danger', 'db_error');
+                        $this->message($creating, 'danger', 'db_error');
                     }
                 }
                 if ($_POST['db_execute'] === '3' && is_object($this->getDB()->getConnection())) {
@@ -42,15 +45,15 @@ class HomeController extends Controller
                         && $manager === true
                         && $category === true
                     ) {
-                        $this->flash('Tables created successfully', 'success','tables_created');
+                        $this->message('Tables created successfully', 'success','tables_created');
                     } else {
-                        $this->flash('Tables cannot be created or all ready created', 'danger', 'tables_error');
+                        $this->message('Tables cannot be created or all ready created', 'danger', 'tables_error');
                     }
                 } else if ($_POST['db_execute'] === '3' && !is_object($this->getDB()->getConnection())) {
-                    $this->flash($this->getDB()->getConnection(), 'danger', 'c_error');
+                    $this->message($this->getDB()->getConnection(), 'danger', 'c_error');
                 }
             } else {
-                $this->flash($this->getDB()->getServer(), 'danger', 's_error');
+                $this->message($this->getDB()->getServer(), 'danger', 's_error');
             }
         }
 

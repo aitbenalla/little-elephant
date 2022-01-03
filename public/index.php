@@ -16,6 +16,8 @@ $router->get('/profile/:username' , 'Author#profile#App');
 # Post Controller
 $router->get('/posts' , 'Post#show#App');
 $router->any('/post/new' , 'Post#save#App');
+$router->any('/post/update/:id' , 'Post#save#App');
+$router->any('/post/:slug' , 'Post#post#App');
 # Security Controller
 $router->any('/login' , 'Security#loginAuthor');
 $router->get('/logout' , 'Security#logoutAuthor');

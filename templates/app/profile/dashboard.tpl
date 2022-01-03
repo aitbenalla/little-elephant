@@ -1,13 +1,19 @@
 {extends file="app/base.tpl"}
 {$title = $smarty.session.author->getUsername()|capitalize}
-
+{block name="stylesheets"}
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
+{/block}
+{block name="javascripts"}
+    <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+    <script src="/assets/admin/js/datatable-config.js"></script>
+{/block}
 {block name="content"}
-{*    <h1 class="fw-bold h2">Profile:</h1>*}
     <div class="row">
         <div class="col-12">
             <div class="p-3 mb-4 bg-light rounded-3">
                 <div class="container text-center">
-                    <img class="rounded-circle" src="data:image/png;base64,{$smarty.session.author->name|base64_encode}" alt="" width="170" height="170">
+                    <img class="rounded-circle" src="data:image/png;base64,{$smarty.session.author->name|base64_encode}"
+                         alt="" width="170" height="170">
                     <h1 class="display-5 fw-bold">{$smarty.session.author->getFullName()|capitalize}</h1>
                     <p class="text-muted text-regular">Themes built by or reviewed by Bootstrap's creators.</p>
                     <div class="mt-4">
@@ -35,22 +41,48 @@
                 </div>
             </div>
         </div>
-        <div class="col">
-            <nav>
-                <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                    <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">Home</button>
-                    <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Profile</button>
-                    <button class="nav-link" id="nav-contact-tab" data-bs-toggle="tab" data-bs-target="#nav-contact" type="button" role="tab" aria-controls="nav-contact" aria-selected="false">Contact</button>
+        <div class="col-12">
+            <div class="p-3 mb-4 bg-light rounded-3">
+                <div class="container">
+                    <h2 class="text-center fw-bold">My Posts:</h2>
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover" id="table_list" class="display">
+                            <thead class="fw-bold">
+                            <tr>
+                                <th>ID</th>
+                                <th>Title</th>
+                                <th>Created At</th>
+                                <th>Updated At</th>
+                                <th>Action</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {if isset($posts)}
+                                {foreach from=$posts item=post}
+                                    <tr>
+                                        <td>{$post->getId()}</td>
+                                        <td>{$post->getTitle()}</td>
+                                        <td>{$post->getCreatedAt()|date_format}</td>
+                                        <td>{if $post->getUpdatedAt()}{$post->getUpdatedAt()|date_format}{else}Never Updated{/if}</td>
+                                        <td>
+                                            <div class="btn-group btn-group-sm" role="group" aria-label="...">
+                                                <a class="btn btn-sm btn-primary"
+                                                   href="/post/update/{$post->getId()}"><i
+                                                            class="fas fa-user-edit"></i></a>
+                                                <a class="btn btn-sm btn-danger"
+                                                   href="/post/delete/{$post->getId()}"
+                                                   onclick="return confirm('Are you sure you want to delete this post?');"><i
+                                                            class="fas fa-user-times"></i></a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                {/foreach}
+                            {/if}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-            </nav>
-            <div class="tab-content" id="nav-tabContent">
-                <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
-
-                </div>
-                <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab"></div>
-                <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab"></div>
             </div>
         </div>
     </div>
-
 {/block}

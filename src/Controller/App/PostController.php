@@ -3,7 +3,9 @@
 namespace App\Controller\App;
 
 use App\Controller\Controller;
-use App\Model\CategoryRepository;
+use App\Controller\flash;
+use App\Form\MediaPostType;
+use App\Form\PostType;
 use App\Model\MediaPostRepository;
 use App\Model\PostRepository;
 use JetBrains\PhpStorm\NoReturn;
@@ -11,6 +13,7 @@ use SmartyException;
 
 class PostController extends Controller
 {
+    use flash;
     /**
      * @throws SmartyException
      */
@@ -19,38 +22,46 @@ class PostController extends Controller
         $repository = new PostRepository();
         $this->display('app/post/show.tpl', ['posts'=>$repository->getAll()]);
     }
+
     /**
      * @throws SmartyException
+     * @throws \DOMException
      */
     #[NoReturn]
-    public function save()
+    public function save($id = null)
     {
-        $categories = new CategoryRepository();
         $repository = new PostRepository();
+        $form = new PostType();
+        $postForm = $form->buildForm();
 
         if (isset($_SESSION['author']))
         {
+            if ($id)
+            {
+                $post = $repository->getById($id);
+                $postForm = $form->buildForm($post);
+            }
+
             if (isset($_POST['postIt']))
             {
-                $persist = $repository->persist($_POST);
+                $persist = $form->submit($_POST);
 
                 $result = $repository->flush($persist);
 
-                if ($result && !empty($_FILES["postCover"]["name"])) {
-
+                if ($result && !empty($_FILES["cover"]["name"])) {
                     $mediaRepository = new MediaPostRepository();
-
-                    $persist_media = $mediaRepository->persist($_FILES, $result);
+                    $media = new MediaPostType();
+                    $persist_media = $media->submit($_FILES, $result);
                     $mediaRepository->flush($persist_media);
                 }
 
                 if ($result) {
 
-                    $this->flash('Saved. <a href="/posts">Go To Posts</a>', 'success', 'post_created');
+                    $this->message('Saved. <a href="/posts">Go To Posts</a>', 'success', 'post_created');
                 }
             }
 
-            $this->display('app/post/save.tpl', ['categories' => $categories->getAll()]);
+            $this->display('app/post/form.tpl', ['form'=>$postForm]);
         }
         else
         {

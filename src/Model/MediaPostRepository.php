@@ -6,20 +6,6 @@ use App\Entity\MediaPost;
 use PDOException;
 class MediaPostRepository extends Database
 {
-    public function persist(Array $data, int $result): MediaPost
-    {
-        $media = new MediaPost();
-        $imgData = file_get_contents($_FILES['postCover']['tmp_name']);
-        $imgName = basename($_FILES["postCover"]["name"]);
-        $imgType = pathinfo($imgName, PATHINFO_EXTENSION);
-
-        $media->setName($imgData);
-        $media->setType($imgType);
-        $media->setPost($result);
-
-        return $media;
-    }
-
     public function flush(MediaPost $media, $id = null): bool|string
     {
         try {

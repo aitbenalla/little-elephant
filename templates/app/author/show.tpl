@@ -10,7 +10,7 @@
                         <img class="rounded-circle" src="data:image/png;base64,{$author->name|base64_encode}" alt="author-photo" width="150" height="150">
                         <div class="card-body">
                             <h5 class="card-title">{$author->getFullName()}</h5>
-                            <p class="text-muted">@{$author->getUsername()} <span>| </span><span><a href="#" class="text-pink">{$author->getEmail()}</a></span></p>
+                            <p class="text-muted"><a href="/profile/{$author->getUsername()}">@{$author->getUsername()}</a> <span>| </span><span>{$author->getEmail()}</span></p>
                             <a href="/profile/{$author->getUsername()}" class="btn btn-primary">Profile</a>
                             <div class="mt-4">
                                 <div class="row">

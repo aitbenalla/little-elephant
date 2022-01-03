@@ -3,6 +3,7 @@
 namespace App\Controller\App;
 
 use App\Controller\Controller;
+use App\Model\PostRepository;
 use JetBrains\PhpStorm\NoReturn;
 use SmartyException;
 
@@ -27,7 +28,8 @@ class ProfileController extends Controller
     {
         if (isset($_SESSION['author']))
         {
-            $this->display('app/profile/dashboard.tpl');
+            $posts = new PostRepository();
+            $this->display('app/profile/dashboard.tpl', ['posts'=>$posts->getByAuthor($_SESSION['author']->getId())]);
         }
         else
         {
