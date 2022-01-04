@@ -155,17 +155,17 @@ class Post
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getTags(): string
+    public function getTags(): ?string
     {
         return $this->tags;
     }
 
     /**
-     * @param string $tags
+     * @param string|null $tags
      */
-    public function setTags(string $tags): void
+    public function setTags(?string $tags): void
     {
         $this->tags = $tags;
     }
